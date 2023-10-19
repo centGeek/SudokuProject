@@ -3,23 +3,27 @@ package org.example;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+
 class SudokuBoardTest {
     @Test
     void isDifferent() {
-        SudokuBoard sudokuBoard1 = new SudokuBoard();
-        SudokuBoard sudokuBoard2 = new SudokuBoard();
-        sudokuBoard1.fillBoard();
-        sudokuBoard2.fillBoard();
-        boolean isTrue = false;
+        SudokuBoard sudokuBoard = new SudokuBoard();
+        sudokuBoard.fillBoard();
+        int[][] board1 = new int[9][9];
+        int[][] board2 = new int[9][9];
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                if (sudokuBoard1.getNumber(i, j) != sudokuBoard2.getNumber(i, j)) {
-                    isTrue = true;
-                    break;
-                }
+                board1[i][j] = sudokuBoard.getNumber(i,j);
             }
         }
-        Assertions.assertTrue(isTrue);
+        sudokuBoard.fillBoard();
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                board2[i][j] = sudokuBoard.getNumber(i,j);
+            }
+        }
+        Assertions.assertFalse(Arrays.equals(board1, board2));
     }
 
     @Test

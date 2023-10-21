@@ -3,24 +3,44 @@ package org.example;
 public class SudokuBoard {
     private final int number = 9;
     private final int[][] board = new int[number][number];
+    private final SudokuSolver sudokuSolver;
 
+    public SudokuBoard(SudokuSolver sudokuSolver) {
+        this.sudokuSolver = sudokuSolver;
+    }
 
+    public void solveGame() {
+        sudokuSolver.solve(this);
+    }
 
     public int getNumber(int x, int y) {
         return board[x][y];
     }
+
     public void setNumber(int x, int y, int value) {
         board[x][y] = value;
     }
-    public void fillBoard() {
-        SudokuSolver sudokuSolver = new TypeSudokuSolver();
-        sudokuSolver.solve(this);
+
+    boolean isValidMove(SudokuBoard board, int row, int column, int num) {
+        for (int i = 0; i < 9; i++) {
+            if (board.getNumber(row, i) == num || board.getNumber(i, column) == num) {
+                return false;
+            }
+        }
+
+        int startRow = (row / 3) * 3;
+        int startCol = (column / 3) * 3;
+        for (int i = startRow; i < startRow + 3; i++) {
+            for (int j = startCol; j < startCol + 3; j++) {
+                if (board.getNumber(i, j) == num) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
-
-
-
-    public void printSudoku() {
+    /*public void printSudoku() {
         for (int row = 0; row < 9; row++) {
             String redText = "\u001B[31m" + "%s" + "\u001B[0m";
             if (row % 3 == 0) {
@@ -42,5 +62,5 @@ public class SudokuBoard {
             }
             System.out.println();
         }
-    }
+    }*/
 }

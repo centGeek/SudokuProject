@@ -8,29 +8,31 @@ import java.util.Arrays;
 class SudokuBoardTest {
     @Test
     void isDifferent() {
-        SudokuBoard sudokuBoard = new SudokuBoard();
-        sudokuBoard.fillBoard();
+        SudokuSolver sudokuSolver = new BacktrackingSudokuSolver();
+        SudokuBoard sudokuBoard = new SudokuBoard(sudokuSolver);
+        sudokuBoard.solveGame();
         int[][] board1 = new int[9][9];
         int[][] board2 = new int[9][9];
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                board1[i][j] = sudokuBoard.getNumber(i,j);
+                board1[i][j] = sudokuBoard.getNumber(i, j);
             }
         }
-        sudokuBoard.fillBoard();
+        sudokuBoard.solveGame();
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                board2[i][j] = sudokuBoard.getNumber(i,j);
+                board2[i][j] = sudokuBoard.getNumber(i, j);
             }
         }
-        Assertions.assertFalse(Arrays.equals(board1, board2));
+        Assertions.assertFalse(Arrays.deepEquals(board1, board2));
     }
 
     @Test
     void gridAlignment() {
-        SudokuBoard sudokuBoard = new SudokuBoard();
-        sudokuBoard.fillBoard();
-        int number = 0;
+        SudokuSolver sudokuSolver = new BacktrackingSudokuSolver();
+        SudokuBoard sudokuBoard = new SudokuBoard(sudokuSolver);
+        sudokuBoard.solveGame();
+        int number;
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 number = sudokuBoard.getNumber(i, j); //sprawdzanie po wierszach

@@ -2,14 +2,40 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.example</groupId>
     <artifactId>project1</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <developers>
+        <developer>
+            <id>247832</id>
+            <name>Maciej Zielak</name>
+            <email>247832@edu.p.lodz.pl</email>
+        </developer>
+        <developer>
+            <id>247638</id>
+            <name>Lukasz Centkowski</name>
+            <email>247638@edu.p.lodz.pl</email>
+        </developer>
+    </developers>
+
+    <description>Projekt grupy laboratoryjnej jm_cz_1015</description>
+
     <reporting>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jxr-plugin</artifactId>
+                <version>3.3.0</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>3.21.0</version>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
@@ -48,71 +74,72 @@
         </plugins>
     </reporting>
 
-<build>
-    <plugins>
-    <plugin>
-        <groupId>org.jacoco</groupId>
-        <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.10</version>
-        <executions>
-            <execution>
-                <goals>
-                    <goal>prepare-agent</goal>
-                </goals>
-            </execution>
-            <execution>
-                <id>report</id>
-                <phase>prepare-package</phase>
-                <goals>
-                    <goal>report</goal>
-                </goals>
-            </execution>
-        </executions>
-    </plugin>
-    <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>3.3.0</version>
-        <configuration>
-            <configLocation>checkstyle2023.xml</configLocation>
-        </configuration>
-        <executions>
-            <execution>
-                <id>checkstyle</id>
-                <phase>verify</phase>
-                <goals>
-                    <goal>check</goal>
-                </goals>
-            </execution>
-        </executions>
-        <dependencies>
-            <dependency>
-                <groupId>com.puppycrawl.tools</groupId>
-                <artifactId>checkstyle</artifactId>
-                <version>10.9.1</version>
-            </dependency>
-        </dependencies>
-    </plugin>
+    <build>
+        <plugins>
+        <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>0.8.10</version>
+            <executions>
+                <execution>
+                    <goals>
+                        <goal>prepare-agent</goal>
+                    </goals>
+                </execution>
+                <execution>
+                    <id>report</id>
+                    <phase>prepare-package</phase>
+                    <goals>
+                        <goal>report</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
         <plugin>
             <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.11.0</version>
+            <artifactId>maven-checkstyle-plugin</artifactId>
+            <version>3.3.0</version>
             <configuration>
-                <release>${java.version}</release>
+                <configLocation>checkstyle2023.xml</configLocation>
             </configuration>
+            <executions>
+                <execution>
+                    <id>checkstyle</id>
+                    <phase>verify</phase>
+                    <goals>
+                        <goal>check</goal>
+                    </goals>
+                </execution>
+            </executions>
+            <dependencies>
+                <dependency>
+                    <groupId>com.puppycrawl.tools</groupId>
+                    <artifactId>checkstyle</artifactId>
+                    <version>10.9.1</version>
+                </dependency>
+            </dependencies>
         </plugin>
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.1.2</version>
-        </plugin>
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-site-plugin</artifactId>
-            <version>4.0.0-M8</version>
-        </plugin>
-    </plugins>
-</build>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <release>${java.version}</release>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.1.2</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>4.0.0-M8</version>
+            </plugin>
+        </plugins>
+    </build>
+
     <dependencies>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -121,6 +148,7 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>

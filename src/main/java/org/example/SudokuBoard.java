@@ -3,7 +3,7 @@ package org.example;
 public class SudokuBoard {
     private final int number = 9;
     private final int[][] board = new int[number][number];
-    private final SudokuSolver sudokuSolver;
+    private SudokuSolver sudokuSolver;
 
     public SudokuBoard(SudokuSolver sudokuSolver) {
         this.sudokuSolver = sudokuSolver;
@@ -13,17 +13,17 @@ public class SudokuBoard {
         sudokuSolver.solve(this);
     }
 
-    public int getNumber(int x, int y) {
+    public int get(int x, int y) {
         return board[x][y];
     }
 
-    public void setNumber(int x, int y, int value) {
+    public void set(int x, int y, int value) {
         board[x][y] = value;
     }
 
     boolean isValidMove(SudokuBoard board, int row, int column, int num) {
         for (int i = 0; i < 9; i++) {
-            if (board.getNumber(row, i) == num || board.getNumber(i, column) == num) {
+            if (board.get(row, i) == num || board.get(i, column) == num) {
                 return false;
             }
         }
@@ -32,7 +32,7 @@ public class SudokuBoard {
         int startCol = (column / 3) * 3;
         for (int i = startRow; i < startRow + 3; i++) {
             for (int j = startCol; j < startCol + 3; j++) {
-                if (board.getNumber(i, j) == num) {
+                if (board.get(i, j) == num) {
                     return false;
                 }
             }

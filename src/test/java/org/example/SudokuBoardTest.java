@@ -15,13 +15,13 @@ class SudokuBoardTest {
         int[][] board2 = new int[9][9];
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                board1[i][j] = sudokuBoard.getNumber(i, j);
+                board1[i][j] = sudokuBoard.get(i, j);
             }
         }
         sudokuBoard.solveGame();
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                board2[i][j] = sudokuBoard.getNumber(i, j);
+                board2[i][j] = sudokuBoard.get(i, j);
             }
         }
         Assertions.assertFalse(Arrays.deepEquals(board1, board2));
@@ -35,23 +35,23 @@ class SudokuBoardTest {
         int number;
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                number = sudokuBoard.getNumber(i, j); //sprawdzanie po wierszach
+                number = sudokuBoard.get(i, j); //sprawdzanie po wierszach`
                 for (int k = 0; k < 9; k++) {
                     if (j == k) {
                         continue;
                     }
-                    Assertions.assertNotEquals(number, sudokuBoard.getNumber(i, k));
+                    Assertions.assertNotEquals(number, sudokuBoard.get(i, k));
                 }
             }
         }
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                number = sudokuBoard.getNumber(j, i); //sprawdzanie po kolumnach
+                number = sudokuBoard.get(j, i); //sprawdzanie po kolumnach
                 for (int k = 0; k < 9; k++) {
                     if (j == k) {
                         continue;
                     }
-                    Assertions.assertNotEquals(number, sudokuBoard.getNumber(k, i));
+                    Assertions.assertNotEquals(number, sudokuBoard.get(k, i));
                 }
             }
         }
@@ -59,13 +59,13 @@ class SudokuBoardTest {
             for (int j = 0; j < 9; j += 3) {
                 for (int x = i; x < i + 3; x++) {
                     for (int y = j; y < j + 3; y++) {
-                        number = sudokuBoard.getNumber(x, y); // sprawdzanie kwadratów 3x3
+                        number = sudokuBoard.get(x, y); // sprawdzanie kwadratów 3x3
                         for (int a = i; a < i + 3; a++) {
                             for (int b = j; b < j + 3; b++) {
                                 if (x == a && y == b) {
                                     continue;
                                 }
-                                Assertions.assertNotEquals(number, sudokuBoard.getNumber(a, b));
+                                Assertions.assertNotEquals(number, sudokuBoard.get(a, b));
                             }
                         }
                     }

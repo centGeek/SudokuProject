@@ -73,4 +73,15 @@ class SudokuBoardTest {
             }
         }
     }
+    @Test
+    void thatGetterAndSetterWorkCorrectly(){
+        SudokuSolver sudokuSolver = new BacktrackingSudokuSolver();
+        SudokuBoard sudokuBoard = new SudokuBoard(sudokuSolver);
+
+        sudokuBoard.set(0,0,4);
+        sudokuBoard.set(0,1,10);
+
+        Assertions.assertEquals(4,sudokuBoard.get(0,0));
+        Assertions.assertEquals(0,sudokuBoard.get(0,1));
+    }
 }

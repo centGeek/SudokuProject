@@ -12,7 +12,9 @@ public class SudokuBoard {
 
     public SudokuRow getRow(Integer y) {
         List<SudokuField> row = new ArrayList<>(number);
-        row.addAll(Arrays.asList(board[y]).subList(0, number));
+        for (int column = 0; column < number; column++) {
+            row.add(board[y][column]);
+        }
         SudokuRow sudokuRow = new SudokuRow();
         sudokuRow.setSudokuFields(row);
         return sudokuRow;

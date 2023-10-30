@@ -10,14 +10,23 @@ public abstract class SudokuPart {
     }
 
     public boolean verify() {
-        Set<Integer> uniqueValues = new HashSet<>();
+        int num = 0;
         for (SudokuField field : sudokuFields) {
-            int fieldValue = field.getFieldValue();
-            if (fieldValue != 0 && !uniqueValues.add(fieldValue)) {
-                return false;
+            if (field.getFieldValue() != 0) {
+                num = field.getFieldValue();
             }
         }
-        return true;
+        if (num == 0) {
+            return true;
+        } else {
+            Set<Integer> sudokuFieldSet = new HashSet<>();
+            for (SudokuField field : sudokuFields) {
+                if (!sudokuFieldSet.add(field.getFieldValue()) && field.getFieldValue()!=0) {
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 }
 

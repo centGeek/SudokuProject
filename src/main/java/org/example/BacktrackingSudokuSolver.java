@@ -12,9 +12,11 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
     }
 
     private void clearBoard(SudokuBoard board) {
-        for (int row = 0; row < 9; row++) {
-            for (int column = 0; column < 9; column++) {
-                board.set(row, column, 0);
+        if (board.get(0, 0) != 0) {
+            for (int row = 0; row < 9; row++) {
+                for (int column = 0; column < 9; column++) {
+                    board.set(row, column, 0);
+                }
             }
         }
     }
@@ -35,8 +37,7 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
         Collections.shuffle(numbers);
 
         for (int num : numbers) {
-            board.set(row, column, num);
-            if (isValidMove(board, row, column)) {
+            if (board.setAndCheck(board, row, column, num)) {
                 if (solveSudoku(board)) {
                     return true;
                 }
@@ -47,10 +48,6 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
         return false;
     }
 
-
-    private boolean isValidMove(SudokuBoard board, int row, int column) {
-        return board.getRow(row).verify() && board.getColumn(column).verify() && board.getBox(row, column).verify();
-    }
 
     private List<Integer> findEmptyCell(SudokuBoard board) {
         for (int row = 0; row < 9; row++) {

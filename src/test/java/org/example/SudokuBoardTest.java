@@ -73,15 +73,95 @@ class SudokuBoardTest {
             }
         }
     }
+
     @Test
-    void thatGetterAndSetterWorkCorrectly(){
+    void thatGetterAndSetterWorkCorrectly() {
         SudokuSolver sudokuSolver = new BacktrackingSudokuSolver();
         SudokuBoard sudokuBoard = new SudokuBoard(sudokuSolver);
 
-        sudokuBoard.set(0,0,4);
-        sudokuBoard.set(0,1,10);
+        sudokuBoard.set(0, 0, 4);
+        sudokuBoard.set(0, 1, 10);
+        sudokuBoard.set(0, -2, 1);
+        sudokuBoard.set(0, 10, 2);
+        sudokuBoard.set(0, 10, -3);
+        sudokuBoard.set(-1, 0, 1);
+        sudokuBoard.set(10, 0, 1);
 
-        Assertions.assertEquals(4,sudokuBoard.get(0,0));
-        Assertions.assertEquals(0,sudokuBoard.get(0,1));
+        Assertions.assertEquals(4, sudokuBoard.get(0, 0));
+        Assertions.assertEquals(0, sudokuBoard.get(0, 1));
+        Assertions.assertEquals(0, sudokuBoard.get(0, 2));
+        Assertions.assertNull(sudokuBoard.get(0, -2));
+        Assertions.assertNull(sudokuBoard.get(-1, 0));
+        Assertions.assertNull(sudokuBoard.get(0, 10));
+        Assertions.assertNull(sudokuBoard.get(10, 0));
+    }
+
+    @Test
+    void getRowTest() {
+        SudokuSolver sudokuSolver = new BacktrackingSudokuSolver();
+        SudokuBoard sudokuBoard = new SudokuBoard(sudokuSolver);
+        sudokuBoard.solveGame();
+
+        Assertions.assertNull(sudokuBoard.getRow(9));
+        Assertions.assertNull(sudokuBoard.getRow(-1));
+        Assertions.assertNotNull(sudokuBoard.getRow(8));
+
+        SudokuRow row = sudokuBoard.getRow(4);
+
+        Assertions.assertEquals(sudokuBoard.get(4, 2), row.sudokuFields.get(2).getFieldValue());
+        Assertions.assertTrue(row.verify());
+    }
+
+    @Test
+    void getColumnTest() {
+        SudokuSolver sudokuSolver = new BacktrackingSudokuSolver();
+        SudokuBoard sudokuBoard = new SudokuBoard(sudokuSolver);
+        sudokuBoard.solveGame();
+
+        Assertions.assertNull(sudokuBoard.getColumn(9));
+        Assertions.assertNull(sudokuBoard.getColumn(-1));
+        Assertions.assertNotNull(sudokuBoard.getColumn(8));
+
+        SudokuColumn column = sudokuBoard.getColumn(4);
+
+        Assertions.assertEquals(sudokuBoard.get(2, 4), column.sudokuFields.get(2).getFieldValue());
+        Assertions.assertTrue(column.verify());
+    }
+
+    @Test
+    void getSudokuBoxTest() {
+        SudokuSolver sudokuSolver = new BacktrackingSudokuSolver();
+        SudokuBoard sudokuBoard = new SudokuBoard(sudokuSolver);
+        sudokuBoard.solveGame();
+
+        Assertions.assertNull(sudokuBoard.getBox(9, 8));
+        Assertions.assertNull(sudokuBoard.getBox(-9, 8));
+        Assertions.assertNull(sudokuBoard.getBox(8, -8));
+        Assertions.assertNull(sudokuBoard.getBox(8, 9));
+        Assertions.assertNotNull(sudokuBoard.getBox(8, 8));
+
+        SudokuBox sudokuBox = sudokuBoard.getBox(2, 1);
+
+        Assertions.assertEquals(sudokuBoard.get(1, 0), sudokuBox.sudokuFields.get(3).getFieldValue());
+        Assertions.assertTrue(sudokuBox.verify());
+    }
+
+    @Test
+    public void checkingWorksCorrectly() {
+        SudokuSolver sudokuSolver = new BacktrackingSudokuSolver();
+        SudokuBoard sudokuBoard = new SudokuBoard(sudokuSolver);
+        Assertions.assertTrue(sudokuBoard.setAndCheck(sudokuBoard, 0, 0, 4));
+
+        Assertions.assertFalse(sudokuBoard.setAndCheck(sudokuBoard, 0, 3, 4));
+        Assertions.assertFalse(sudokuBoard.setAndCheck(sudokuBoard, 3, 0, 4));
+        Assertions.assertFalse(sudokuBoard.setAndCheck(sudokuBoard, 1, 1, 4));
+        Assertions.assertFalse(sudokuBoard.setAndCheck(sudokuBoard, 1, 1, 4));
+
+        Assertions.assertFalse(sudokuBoard.setAndCheck(sudokuBoard, -3, 1, 5));
+        Assertions.assertFalse(sudokuBoard.setAndCheck(sudokuBoard, 10, 1, 6));
+        Assertions.assertFalse(sudokuBoard.setAndCheck(sudokuBoard, 2, -1, 7));
+        Assertions.assertFalse(sudokuBoard.setAndCheck(sudokuBoard, 2, 10, 8));
+        Assertions.assertFalse(sudokuBoard.setAndCheck(sudokuBoard, 2, 3, 10));
+        Assertions.assertFalse(sudokuBoard.setAndCheck(sudokuBoard, 2, 5, -1));
     }
 }

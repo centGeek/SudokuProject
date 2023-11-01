@@ -1,3 +1,4 @@
+/*
 package org.example;
 
 public class Main {
@@ -5,6 +6,5 @@ public class Main {
         SudokuSolver sudokuSolver = new BacktrackingSudokuSolver();
         SudokuBoard sudokuBoard = new SudokuBoard(sudokuSolver);
         sudokuBoard.solveGame();
-        sudokuBoard.printSudoku();
     }
-}
+}*/

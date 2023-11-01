@@ -3,6 +3,8 @@ package org.example;
 import java.util.*;
 
 public abstract class SudokuPart {
+
+
     protected List<SudokuField> sudokuFields;
 
     public void setSudokuFields(List<SudokuField> sudokuFields) {
@@ -21,13 +23,14 @@ public abstract class SudokuPart {
         } else {
             Set<Integer> sudokuFieldSet = new HashSet<>();
             for (SudokuField field : sudokuFields) {
-                if (!sudokuFieldSet.add(field.getFieldValue()) && field.getFieldValue()!=0) {
+                if (!sudokuFieldSet.add(field.getFieldValue()) && field.getFieldValue() != 0) {
                     return false;
                 }
             }
             return true;
         }
     }
+
 }
 
 

@@ -2,7 +2,7 @@ package org.example;
 
 import java.util.*;
 
-public abstract class SudokuPart {
+public abstract class SudokuPart implements SudokuObserver {
 
 
     protected List<SudokuField> sudokuFields;

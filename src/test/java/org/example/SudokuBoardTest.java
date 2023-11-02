@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.List;
 
 class SudokuBoardTest {
     @Test
@@ -29,9 +30,14 @@ class SudokuBoardTest {
 
     @Test
     void gridAlignment() {
+        SudokuBox sudokuBox = new SudokuBox();
+        SudokuColumn sudokuColumn = new SudokuColumn();
+        SudokuRow sudokuRow = new SudokuRow();
         SudokuSolver sudokuSolver = new BacktrackingSudokuSolver();
         SudokuBoard sudokuBoard = new SudokuBoard(sudokuSolver);
+        sudokuBoard.attach(List.of(sudokuRow,sudokuColumn,sudokuBox));
         sudokuBoard.solveGame();
+
         int number;
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
@@ -76,8 +82,12 @@ class SudokuBoardTest {
 
     @Test
     void thatGetterAndSetterWorkCorrectly() {
+        SudokuBox sudokuBox = new SudokuBox();
+        SudokuColumn sudokuColumn = new SudokuColumn();
+        SudokuRow sudokuRow = new SudokuRow();
         SudokuSolver sudokuSolver = new BacktrackingSudokuSolver();
         SudokuBoard sudokuBoard = new SudokuBoard(sudokuSolver);
+        sudokuBoard.attach(List.of(sudokuRow,sudokuColumn,sudokuBox));
 
         sudokuBoard.set(0, 0, 4);
         sudokuBoard.set(0, 1, 10);
@@ -98,8 +108,14 @@ class SudokuBoardTest {
 
     @Test
     void getRowTest() {
+        SudokuBox sudokuBox = new SudokuBox();
+        SudokuColumn sudokuColumn = new SudokuColumn();
+        SudokuRow sudokuRow = new SudokuRow();
+
         SudokuSolver sudokuSolver = new BacktrackingSudokuSolver();
         SudokuBoard sudokuBoard = new SudokuBoard(sudokuSolver);
+        sudokuBoard.attach(List.of(sudokuRow,sudokuColumn,sudokuBox));
+
         sudokuBoard.solveGame();
 
         Assertions.assertNull(sudokuBoard.getRow(9));
@@ -114,8 +130,12 @@ class SudokuBoardTest {
 
     @Test
     void getColumnTest() {
+        SudokuBox sudokuBox = new SudokuBox();
+        SudokuColumn sudokuColumn = new SudokuColumn();
+        SudokuRow sudokuRow = new SudokuRow();
         SudokuSolver sudokuSolver = new BacktrackingSudokuSolver();
         SudokuBoard sudokuBoard = new SudokuBoard(sudokuSolver);
+        sudokuBoard.attach(List.of(sudokuRow,sudokuColumn,sudokuBox));
         sudokuBoard.solveGame();
 
         Assertions.assertNull(sudokuBoard.getColumn(9));
@@ -131,7 +151,11 @@ class SudokuBoardTest {
     @Test
     void getSudokuBoxTest() {
         SudokuSolver sudokuSolver = new BacktrackingSudokuSolver();
+        SudokuBox sudokuBox = new SudokuBox();
+        SudokuColumn sudokuColumn = new SudokuColumn();
+        SudokuRow sudokuRow = new SudokuRow();
         SudokuBoard sudokuBoard = new SudokuBoard(sudokuSolver);
+        sudokuBoard.attach(List.of(sudokuRow,sudokuColumn,sudokuBox));
         sudokuBoard.solveGame();
 
         Assertions.assertNull(sudokuBoard.getBox(9, 8));
@@ -140,16 +164,36 @@ class SudokuBoardTest {
         Assertions.assertNull(sudokuBoard.getBox(8, 9));
         Assertions.assertNotNull(sudokuBoard.getBox(8, 8));
 
-        SudokuBox sudokuBox = sudokuBoard.getBox(2, 1);
+        SudokuBox sudokuBox2 = sudokuBoard.getBox(2, 1);
 
-        Assertions.assertEquals(sudokuBoard.get(1, 0), sudokuBox.sudokuFields.get(3).getFieldValue());
-        Assertions.assertTrue(sudokuBox.verify());
+        Assertions.assertEquals(sudokuBoard.get(1, 0), sudokuBox2.sudokuFields.get(3).getFieldValue());
+        Assertions.assertTrue(sudokuBox2.verify());
+    }
+
+    @Test
+    public void attachAndDetachWorksCorrectly(){
+        SudokuBox sudokuBox = new SudokuBox();
+        SudokuColumn sudokuColumn = new SudokuColumn();
+        SudokuRow sudokuRow = new SudokuRow();
+        SudokuSolver sudokuSolver = new BacktrackingSudokuSolver();
+        SudokuBoard sudokuBoard = new SudokuBoard(sudokuSolver);
+        sudokuBoard.attach(List.of(sudokuRow, sudokuColumn, sudokuBox));
+        Assertions.assertEquals(3, sudokuBoard.getSudokuObservers().size());
+
+        sudokuBoard.detach(sudokuBox);
+        Assertions.assertEquals(2, sudokuBoard.getSudokuObservers().size());
     }
 
     @Test
     public void checkingWorksCorrectly() {
+        SudokuBox sudokuBox = new SudokuBox();
+        SudokuColumn sudokuColumn = new SudokuColumn();
+        SudokuRow sudokuRow = new SudokuRow();
+
         SudokuSolver sudokuSolver = new BacktrackingSudokuSolver();
         SudokuBoard sudokuBoard = new SudokuBoard(sudokuSolver);
+        sudokuBoard.attach(List.of(sudokuRow,sudokuColumn,sudokuBox));
+
         Assertions.assertTrue(sudokuBoard.setAndCheck(sudokuBoard, 0, 0, 4));
 
         Assertions.assertFalse(sudokuBoard.setAndCheck(sudokuBoard, 0, 3, 4));

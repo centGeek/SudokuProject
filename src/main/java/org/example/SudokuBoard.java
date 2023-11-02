@@ -4,10 +4,34 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class SudokuBoard implements SudokuObserver {
+public class SudokuBoard {
     private final int number = 9;
     private final SudokuField[][] sudokuBoard = new SudokuField[number][number];
     private final SudokuSolver sudokuSolver;
+    private final List<SudokuObserver> sudokuObservers = new ArrayList<>();
+
+
+    public void attach(List<SudokuObserver> observers) {
+        sudokuObservers.addAll(observers);
+    }
+
+    public List<SudokuObserver> getSudokuObservers() {
+        return sudokuObservers;
+    }
+
+    public void detach(SudokuObserver observer) {
+        sudokuObservers.remove(observer);
+    }
+
+
+    private boolean checkBoard(SudokuBoard sudokuBoard, int row, int column) {
+        for (SudokuObserver sudokuObserver : sudokuObservers) {
+            if (!sudokuObserver.update(sudokuBoard, row, column)) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     public SudokuRow getRow(Integer y) {
         if (y >= 0 && y < 9) {
@@ -81,10 +105,6 @@ public class SudokuBoard implements SudokuObserver {
             return checkBoard(sudokuBoard, x, y);
         }
         return false;
-    }
-
-    public boolean checkBoard(SudokuBoard board, int row, int column) {
-        return board.getRow(row).verify() && board.getColumn(column).verify() && board.getBox(row, column).verify();
     }
 
 }

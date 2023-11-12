@@ -37,7 +37,7 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
         Collections.shuffle(numbers);
 
         for (int num : numbers) {
-            if (board.setAndCheck(board, row, column, num)) {
+            if (board.setAndCheck(row, column, num)) {
                 if (solveSudoku(board)) {
                     return true;
                 }

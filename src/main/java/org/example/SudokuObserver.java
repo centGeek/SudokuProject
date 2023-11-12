@@ -1,6 +1,10 @@
 package org.example;
 
 public interface SudokuObserver {
-    boolean update(SudokuBoard sudokuBoard, int x, int y);
+    boolean verify(int row, int column);
+
+    int getLastUpdatedRow();
+
+    int getLastUpdatedColumn();
 
 }

@@ -4,39 +4,26 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class SudokuBoard {
+public class SudokuBoard implements SudokuObserver {
     private final int number = 9;
-    private final SudokuField[][] sudokuBoard = new SudokuField[number][number];
+    private int lastUpdatedRow;
+    private int lastUpdatedColumn;
+    private final SudokuField[][] sudokuFields = new SudokuField[number][number];
     private final SudokuSolver sudokuSolver;
-    private final List<SudokuObserver> sudokuObservers = new ArrayList<>();
 
-
-    public void attach(List<SudokuObserver> observers) {
-        sudokuObservers.addAll(observers);
+    public int getLastUpdatedRow() {
+        return lastUpdatedRow;
     }
 
-    public List<SudokuObserver> getSudokuObservers() {
-        return sudokuObservers;
+    public int getLastUpdatedColumn() {
+        return lastUpdatedColumn;
     }
 
-    public void detach(SudokuObserver observer) {
-        sudokuObservers.remove(observer);
-    }
-
-
-    private boolean checkBoard(SudokuBoard sudokuBoard, int row, int column) {
-        for (SudokuObserver sudokuObserver : sudokuObservers) {
-            if (!sudokuObserver.update(sudokuBoard, row, column)) {
-                return false;
-            }
-        }
-        return true;
-    }
 
     public SudokuRow getRow(Integer y) {
         if (y >= 0 && y < 9) {
             List<SudokuField> column = new ArrayList<>(number);
-            column.addAll(Arrays.asList(sudokuBoard[y]).subList(0, number));
+            column.addAll(Arrays.asList(sudokuFields[y]).subList(0, number));
             SudokuRow sudokuRow = new SudokuRow();
             sudokuRow.setSudokuFields(column);
             return sudokuRow;
@@ -48,7 +35,7 @@ public class SudokuBoard {
         if (x >= 0 && x < 9) {
             List<SudokuField> column = new ArrayList<>(number);
             for (int row = 0; row < number; row++) {
-                column.add(sudokuBoard[row][x]);
+                column.add(sudokuFields[row][x]);
             }
             SudokuColumn sudokuColumn = new SudokuColumn();
             sudokuColumn.setSudokuFields(column);
@@ -64,7 +51,7 @@ public class SudokuBoard {
             int startRow = (x / 3) * 3;
             int startCol = (y / 3) * 3;
             for (int row = startRow; row < startRow + 3; row++) {
-                sudokuFieldList.addAll(Arrays.asList(sudokuBoard[row]).subList(startCol, startCol + 3));
+                sudokuFieldList.addAll(Arrays.asList(sudokuFields[row]).subList(startCol, startCol + 3));
             }
             sudokuBox.setSudokuFields(sudokuFieldList);
             return sudokuBox;
@@ -77,7 +64,7 @@ public class SudokuBoard {
         this.sudokuSolver = sudokuSolver;
         for (int x = 0; x < number; x++) {
             for (int y = 0; y < number; y++) {
-                sudokuBoard[x][y] = new SudokuField();
+                sudokuFields[x][y] = new SudokuField(this);
             }
         }
     }
@@ -88,23 +75,30 @@ public class SudokuBoard {
 
     public Integer get(int x, int y) {
         if (x >= 0 && x <= 9 && y >= 0 && y <= 9) {
-            return sudokuBoard[x][y].getFieldValue();
+            return sudokuFields[x][y].getFieldValue();
         }
         return null;
     }
 
     public void set(int x, int y, int value) {
         if (value >= 0 && value <= 9 && x >= 0 && x <= 9 && y >= 0 && y <= 9) {
-            sudokuBoard[x][y].setFieldValue(value);
+            sudokuFields[x][y].setFieldValue(value);
         }
     }
 
-    public boolean setAndCheck(SudokuBoard sudokuBoard, int x, int y, int value) {
+    public boolean setAndCheck(int x, int y, int value) {
         if (value >= 0 && value <= 9 && x >= 0 && x <= 9 && y >= 0 && y <= 9) {
-            sudokuBoard.set(x, y, value);
-            return checkBoard(sudokuBoard, x, y);
+            lastUpdatedColumn = y;
+            lastUpdatedRow = x;
+            this.set(x, y, value);
+            return sudokuFields[x][y].notifyObservers();
         }
         return false;
+    }
+
+    @Override
+    public boolean verify(int row, int column) {
+        return getBox(row, column).verify() && getRow(row).verify() && getColumn(column).verify();
     }
 
 }

@@ -8,10 +8,12 @@ import java.util.List;
 public class SudokuPartTest {
     @Test
     public void thatFieldsAreSetCorrectly() {
-        SudokuField sudokuField1 = new SudokuField();
-        SudokuField sudokuField2 = new SudokuField();
-        SudokuField sudokuField3 = new SudokuField();
-        SudokuField sudokuField4 = new SudokuField();
+        SudokuSolver sudokuSolver = new BacktrackingSudokuSolver();
+        SudokuBoard sudokuBoard = new SudokuBoard(sudokuSolver);
+        SudokuField sudokuField1 = new SudokuField(sudokuBoard);
+        SudokuField sudokuField2 = new SudokuField(sudokuBoard);
+        SudokuField sudokuField3 = new SudokuField(sudokuBoard);
+        SudokuField sudokuField4 = new SudokuField(sudokuBoard);
 
         sudokuField1.setFieldValue(2);
         sudokuField2.setFieldValue(3);
@@ -31,11 +33,13 @@ public class SudokuPartTest {
 
     @Test
     public void thatVerifyWorksCorrectly() {
+        SudokuSolver sudokuSolver = new BacktrackingSudokuSolver();
+        SudokuBoard sudokuBoard = new SudokuBoard(sudokuSolver);
         SudokuPart sudokuColumn = new SudokuColumn();
-        SudokuField sudokuField1 = new SudokuField();
-        SudokuField sudokuField2 = new SudokuField();
-        SudokuField sudokuField3 = new SudokuField();
-        SudokuField sudokuField4 = new SudokuField();
+        SudokuField sudokuField1 = new SudokuField(sudokuBoard);
+        SudokuField sudokuField2 = new SudokuField(sudokuBoard);
+        SudokuField sudokuField3 = new SudokuField(sudokuBoard);
+        SudokuField sudokuField4 = new SudokuField(sudokuBoard);
 
         sudokuField1.setFieldValue(2);
         sudokuField2.setFieldValue(3);

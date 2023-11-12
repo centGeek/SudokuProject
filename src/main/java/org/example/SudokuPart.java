@@ -1,14 +1,20 @@
 package org.example;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-public abstract class SudokuPart implements SudokuObserver {
+public abstract class SudokuPart {
 
 
     protected List<SudokuField> sudokuFields;
 
     public void setSudokuFields(List<SudokuField> sudokuFields) {
         this.sudokuFields = sudokuFields;
+    }
+
+    public List<SudokuField> getSudokuFields() {
+        return sudokuFields;
     }
 
     public boolean verify() {

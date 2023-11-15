@@ -22,10 +22,12 @@ public class SudokuBoard implements SudokuObserver {
 
     public SudokuRow getRow(Integer y) {
         if (y >= 0 && y < 9) {
-            List<SudokuField> column = new ArrayList<>(number);
-            column.addAll(Arrays.asList(sudokuFields[y]).subList(0, number));
+            List<SudokuField> row = Arrays.asList(new SudokuField[number]);
+            for (int column = 0; column < number; column++) {
+                row.set(column, sudokuFields[y][column]);
+            }
             SudokuRow sudokuRow = new SudokuRow();
-            sudokuRow.setSudokuFields(column);
+            sudokuRow.setSudokuFields(row);
             return sudokuRow;
         }
         return null;
@@ -33,9 +35,9 @@ public class SudokuBoard implements SudokuObserver {
 
     public SudokuColumn getColumn(Integer x) {
         if (x >= 0 && x < 9) {
-            List<SudokuField> column = new ArrayList<>(number);
+            List<SudokuField> column = Arrays.asList(new SudokuField[number]);
             for (int row = 0; row < number; row++) {
-                column.add(sudokuFields[row][x]);
+                column.set(row, sudokuFields[row][x]);
             }
             SudokuColumn sudokuColumn = new SudokuColumn();
             sudokuColumn.setSudokuFields(column);
@@ -47,7 +49,7 @@ public class SudokuBoard implements SudokuObserver {
     public SudokuBox getBox(Integer x, Integer y) {
         if (x >= 0 && x < 9 && y >= 0 && y < 9) {
             SudokuBox sudokuBox = new SudokuBox();
-            List<SudokuField> sudokuFieldList = new ArrayList<>();
+            List<SudokuField> sudokuFieldList = new ArrayList<>(number);
             int startRow = (x / 3) * 3;
             int startCol = (y / 3) * 3;
             for (int row = startRow; row < startRow + 3; row++) {

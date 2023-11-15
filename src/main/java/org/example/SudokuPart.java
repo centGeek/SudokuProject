@@ -1,13 +1,13 @@
 package org.example;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public abstract class SudokuPart {
-
-
-    protected List<SudokuField> sudokuFields;
+    private final int size = 9;
+    protected List<SudokuField> sudokuFields = Arrays.asList(new SudokuField[size]);
 
     public void setSudokuFields(List<SudokuField> sudokuFields) {
         this.sudokuFields = sudokuFields;

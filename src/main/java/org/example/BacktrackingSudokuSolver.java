@@ -1,6 +1,6 @@
 package org.example;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -30,12 +30,8 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
         int row = emptyCell.get(0);
         int column = emptyCell.get(1);
 
-        List<Integer> numbers = new ArrayList<>();
-        for (int num = 1; num <= 9; num++) {
-            numbers.add(num);
-        }
+        List<Integer> numbers = Arrays.asList(1,2,3,4,5,6,7,8,9);
         Collections.shuffle(numbers);
-
         for (int num : numbers) {
             if (board.setAndCheck(row, column, num)) {
                 if (solveSudoku(board)) {
@@ -53,7 +49,7 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
         for (int row = 0; row < 9; row++) {
             for (int column = 0; column < 9; column++) {
                 if (board.get(row, column) == 0) {
-                    return List.of(row, column);
+                    return Arrays.asList(row, column);
                 }
             }
         }

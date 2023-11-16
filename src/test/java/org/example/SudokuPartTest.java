@@ -28,6 +28,10 @@ public class SudokuPartTest {
         Assertions.assertEquals(5, sudokuField3.getFieldValue());
         Assertions.assertEquals(1, sudokuField4.getFieldValue());
 
+        sudokuField4.setFieldValue(-3);
+        sudokuField3.setFieldValue(10);
+        Assertions.assertNotEquals(-3, sudokuField4.getFieldValue());
+        Assertions.assertNotEquals(10, sudokuField3.getFieldValue());
         Assertions.assertTrue(sudokuPart.verify());
     }
 

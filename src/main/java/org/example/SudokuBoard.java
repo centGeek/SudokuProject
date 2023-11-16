@@ -85,7 +85,7 @@ public class SudokuBoard implements SudokuObserver {
     }
 
     public void set(int x, int y, int value) {
-        if (value >= 0 && value <= 9 && x >= 0 && x <= 9 && y >= 0 && y <= 9) {
+        if (x >= 0 && x <= 9 && y >= 0 && y <= 9) {
             board[x][y].setFieldValue(value);
         }
     }

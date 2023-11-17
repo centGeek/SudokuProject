@@ -1,5 +1,7 @@
 package org.example;
 
+import com.google.common.base.Objects;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -105,4 +107,33 @@ public class SudokuBoard implements SudokuObserver {
         return getBox(row, column).verify() && getRow(row).verify() && getColumn(column).verify();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        SudokuBoard that = (SudokuBoard) o;
+        return Arrays.deepEquals(board, that.board) && Objects.equal(sudokuSolver, that.sudokuSolver);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(lastUpdatedRow, lastUpdatedColumn, sudokuSolver, board);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder boardToString = new StringBuilder();
+        for (SudokuField[] sudokuFields : board) {
+            for (SudokuField sudokuField : sudokuFields) {
+                boardToString.append(sudokuField.getFieldValue()).append(" ");
+            }
+        }
+
+        return "SudokuBoard{" + "board=" + boardToString + "sudokuSolver=" + sudokuSolver + "}";
+
+    }
 }

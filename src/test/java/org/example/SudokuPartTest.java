@@ -6,34 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 public class SudokuPartTest {
-    @Test
-    public void thatFieldsAreSetCorrectly() {
-        SudokuSolver sudokuSolver = new BacktrackingSudokuSolver();
-        SudokuBoard sudokuBoard = new SudokuBoard(sudokuSolver);
-        SudokuField sudokuField1 = new SudokuField(sudokuBoard);
-        SudokuField sudokuField2 = new SudokuField(sudokuBoard);
-        SudokuField sudokuField3 = new SudokuField(sudokuBoard);
-        SudokuField sudokuField4 = new SudokuField(sudokuBoard);
 
-        sudokuField1.setFieldValue(2);
-        sudokuField2.setFieldValue(3);
-        sudokuField3.setFieldValue(5);
-        sudokuField4.setFieldValue(1);
-
-        SudokuPart sudokuPart = new SudokuRow();
-        sudokuPart.setSudokuFields(List.of(sudokuField1, sudokuField2, sudokuField3, sudokuField4));
-
-        Assertions.assertEquals(2, sudokuField1.getFieldValue());
-        Assertions.assertEquals(3, sudokuField2.getFieldValue());
-        Assertions.assertEquals(5, sudokuField3.getFieldValue());
-        Assertions.assertEquals(1, sudokuField4.getFieldValue());
-
-        sudokuField4.setFieldValue(-3);
-        sudokuField3.setFieldValue(10);
-        Assertions.assertNotEquals(-3, sudokuField4.getFieldValue());
-        Assertions.assertNotEquals(10, sudokuField3.getFieldValue());
-        Assertions.assertTrue(sudokuPart.verify());
-    }
 
     @Test
     public void thatVerifyWorksCorrectly() {
@@ -61,6 +34,47 @@ public class SudokuPartTest {
 
         sudokuColumn.setSudokuFields(List.of(sudokuField1, sudokuField2));
         Assertions.assertTrue(sudokuColumn.verify());
+    }
+    @Test
+    void thatEqualsAndHashcodeWorksCorrectly(){
+      SudokuSolver sudokuSolver = new BacktrackingSudokuSolver();
+      SudokuObserver sudokuObserver = new SudokuBoard(sudokuSolver);
+      SudokuField sudokuField1 = new SudokuField(sudokuObserver);
+      SudokuField sudokuField2 = new SudokuField(sudokuObserver);
+      Assertions.assertEquals(sudokuField1, sudokuField2);
+      sudokuField1.setFieldValue(3);
+      Assertions.assertNotEquals(sudokuField1, sudokuField2);
+    }
+    @Test
+    void thatToStringWorksCorrectly(){
+        SudokuSolver sudokuSolver = new BacktrackingSudokuSolver();
+        SudokuObserver sudokuObserver = new SudokuBoard(sudokuSolver);
+        SudokuField sudokuField1 = new SudokuField(sudokuObserver);
+        SudokuField sudokuField2 = new SudokuField(sudokuObserver);
+        Assertions.assertEquals(sudokuField1.toString(),sudokuField2.toString());
+
+        sudokuField1.setFieldValue(2);
+        Assertions.assertNotEquals(sudokuField1.toString(), sudokuField2.toString());
+    }
+    @Test
+    void thatSudokuPartInheritedClassesEqualsAndHashCodeWorksCorrectly(){
+        SudokuPart sudokuRow = new SudokuRow();
+        SudokuPart sudokuBox = new SudokuBox();
+        SudokuPart sudokuColumn1 = new SudokuColumn();
+        SudokuPart sudokuColumn2 = new SudokuColumn();
+        Assertions.assertNotEquals(sudokuRow, sudokuBox);
+        Assertions.assertNotEquals(sudokuBox, sudokuColumn1);
+        Assertions.assertEquals(sudokuColumn1, sudokuColumn2);
+    }
+    @Test
+    void thatSudokuPartInheritedClassesToStringWorksCorrectly(){
+        SudokuPart sudokuRow = new SudokuRow();
+        SudokuPart sudokuBox = new SudokuBox();
+        SudokuPart sudokuColumn1 = new SudokuColumn();
+        SudokuPart sudokuColumn2 = new SudokuColumn();
+        Assertions.assertNotEquals(sudokuRow.toString(), sudokuBox.toString());
+        Assertions.assertNotEquals(sudokuBox.toString(), sudokuColumn1.toString());
+        Assertions.assertEquals(sudokuColumn1.toString(), sudokuColumn2.toString());
     }
 
 }

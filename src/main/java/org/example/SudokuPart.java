@@ -1,9 +1,8 @@
 package org.example;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import com.google.common.base.Objects;
+
+import java.util.*;
 
 public abstract class SudokuPart {
     private final int size = 9;
@@ -16,6 +15,15 @@ public abstract class SudokuPart {
     public List<SudokuField> getSudokuFields() {
         return sudokuFields;
     }
+
+//    private List<SudokuField> copyValues(List<SudokuField> sudokuFieldsCopied) {
+//        List<SudokuField> sudokuFields = Arrays.asList(new SudokuField[size]);
+//        for (int i = 0; i < sudokuFieldsCopied.size(); i++) {
+//            sudokuFields.set(i, sudokuFieldsCopied.get(i));
+//        }
+//        return sudokuFields;
+//    }
+
 
     public boolean verify() {
         int num = 0;
@@ -37,6 +45,22 @@ public abstract class SudokuPart {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        SudokuPart that = (SudokuPart) o;
+        return Objects.equal(sudokuFields, that.sudokuFields);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(sudokuFields);
+    }
 }
 
 

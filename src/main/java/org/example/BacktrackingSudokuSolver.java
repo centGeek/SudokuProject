@@ -30,7 +30,7 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
         int row = emptyCell.get(0);
         int column = emptyCell.get(1);
 
-        List<Integer> numbers = Arrays.asList(1,2,3,4,5,6,7,8,9);
+        List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
         Collections.shuffle(numbers);
         for (int num : numbers) {
             if (board.setAndCheck(row, column, num)) {
@@ -54,5 +54,10 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
             }
         }
         return null;
+    }
+
+    @Override
+    public String toString() {
+        return "BacktrackingSudokuSolver{}";
     }
 }

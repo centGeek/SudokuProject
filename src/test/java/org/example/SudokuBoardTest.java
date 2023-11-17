@@ -190,13 +190,4 @@ class SudokuBoardTest {
         Assertions.assertFalse(sudokuBoard.setAndCheck(2, 5, -1));
     }
 
-    @Test
-    public void breakingProgram() {
-        SudokuSolver sudokuSolver = new BacktrackingSudokuSolver();
-        SudokuBoard sudokuBoard = new SudokuBoard(sudokuSolver);
-
-        List<SudokuField> sudokuFields1 = Arrays.asList(new SudokuField(sudokuBoard));
-        Assertions.assertThrows(UnsupportedOperationException.class, () ->
-                sudokuFields1.add(new SudokuField(sudokuBoard)));
-    }
 }

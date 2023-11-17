@@ -1,6 +1,9 @@
 package org.example;
 
+import com.google.common.base.Objects;
+
 public class SudokuField {
+
     private int value;
     private final SudokuObserver sudokuObserver;
 
@@ -20,5 +23,27 @@ public class SudokuField {
 
     public int getFieldValue() {
         return value;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        SudokuField that = (SudokuField) o;
+        return Objects.equal(value, that.value) && Objects.equal(sudokuObserver, that.sudokuObserver);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(value, sudokuObserver);
+    }
+
+    @Override
+    public String toString() {
+        return "SudokuField{" + "value=" + value + ", sudokuObserver=" + sudokuObserver + '}';
     }
 }

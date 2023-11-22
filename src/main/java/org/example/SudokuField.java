@@ -34,12 +34,12 @@ public class SudokuField {
             return false;
         }
         SudokuField that = (SudokuField) o;
-        return Objects.equal(value, that.value) && Objects.equal(sudokuObserver, that.sudokuObserver);
+        return Objects.equal(value, that.value);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(value, sudokuObserver);
+        return Objects.hashCode(value);
     }
 
     @Override

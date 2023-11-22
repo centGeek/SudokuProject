@@ -116,12 +116,22 @@ public class SudokuBoard implements SudokuObserver {
             return false;
         }
         SudokuBoard that = (SudokuBoard) o;
-        return Arrays.deepEquals(board, that.board) && Objects.equal(sudokuSolver, that.sudokuSolver);
+
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                if (!(that.board[i][j].getFieldValue() == board[i][j].getFieldValue())) {
+                    return false;
+                }
+            }
+        }
+        return Objects.equal(sudokuSolver, that.sudokuSolver);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(lastUpdatedRow, lastUpdatedColumn, sudokuSolver, board);
+        int result = Objects.hashCode(sudokuSolver);
+        result = 31 * result + Arrays.deepHashCode(board);
+        return result;
     }
 
     @Override

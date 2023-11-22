@@ -2,7 +2,10 @@ package org.example;
 
 import com.google.common.base.Objects;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public abstract class SudokuPart {
     private final int size = 9;
@@ -15,15 +18,6 @@ public abstract class SudokuPart {
     public List<SudokuField> getSudokuFields() {
         return sudokuFields;
     }
-
-//    private List<SudokuField> copyValues(List<SudokuField> sudokuFieldsCopied) {
-//        List<SudokuField> sudokuFields = Arrays.asList(new SudokuField[size]);
-//        for (int i = 0; i < sudokuFieldsCopied.size(); i++) {
-//            sudokuFields.set(i, sudokuFieldsCopied.get(i));
-//        }
-//        return sudokuFields;
-//    }
-
 
     public boolean verify() {
         int num = 0;

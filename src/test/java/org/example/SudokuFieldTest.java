@@ -34,4 +34,25 @@ public class SudokuFieldTest {
         Assertions.assertNotEquals(10, sudokuField3.getFieldValue());
         Assertions.assertTrue(sudokuPart.verify());
     }
+
+    @Test
+    public void thatFieldsEqualsCorrectly() {
+        SudokuSolver sudokuSolver = new BacktrackingSudokuSolver();
+        SudokuBoard sudokuBoard = new SudokuBoard(sudokuSolver);
+        SudokuField sudokuField1 = new SudokuField(sudokuBoard);
+        SudokuField sudokuField2 = new SudokuField(sudokuBoard);
+        Assertions.assertEquals(sudokuField1, sudokuField2);
+        Assertions.assertEquals(sudokuField1.hashCode(), sudokuField2.hashCode());
+
+        sudokuField1.setFieldValue(1);
+
+        Assertions.assertNotEquals(sudokuField1, sudokuField2);
+
+        Assertions.assertNotEquals(sudokuField2, null);
+        Assertions.assertNotEquals(sudokuField1, sudokuBoard);
+
+        sudokuField1 = sudokuField2;
+
+        Assertions.assertEquals(sudokuField1, sudokuField2);
+    }
 }

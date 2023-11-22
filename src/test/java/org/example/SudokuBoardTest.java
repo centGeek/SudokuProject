@@ -1,5 +1,6 @@
 package org.example;
 
+import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -190,4 +191,20 @@ class SudokuBoardTest {
         Assertions.assertFalse(sudokuBoard.setAndCheck(2, 5, -1));
     }
 
+    @Test
+    public void sudokuBoardEqualsWorksCorrectly() {
+        SudokuSolver sudokuSolver = new BacktrackingSudokuSolver();
+        SudokuBoard sudokuBoard1 = new SudokuBoard(sudokuSolver);
+        SudokuBoard sudokuBoard2 = new SudokuBoard(sudokuSolver);
+        Assertions.assertEquals(sudokuBoard1, sudokuBoard2);
+        Assertions.assertEquals(sudokuBoard1.hashCode(), sudokuBoard2.hashCode());
+        sudokuBoard2.solveGame();
+        Assertions.assertNotEquals(sudokuBoard1, sudokuBoard2);
+        sudokuBoard1 = null;
+        Assertions.assertNotEquals(sudokuBoard2, sudokuBoard1);
+        sudokuBoard1 = sudokuBoard2;
+        Assertions.assertEquals(sudokuBoard1, sudokuBoard2);
+        SudokuPart sudokuPart = new SudokuColumn();
+        Assertions.assertNotEquals(sudokuBoard1, sudokuPart);
+    }
 }

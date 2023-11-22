@@ -35,29 +35,33 @@ public class SudokuPartTest {
         sudokuColumn.setSudokuFields(List.of(sudokuField1, sudokuField2));
         Assertions.assertTrue(sudokuColumn.verify());
     }
+
     @Test
-    void thatEqualsAndHashcodeWorksCorrectly(){
-      SudokuSolver sudokuSolver = new BacktrackingSudokuSolver();
-      SudokuObserver sudokuObserver = new SudokuBoard(sudokuSolver);
-      SudokuField sudokuField1 = new SudokuField(sudokuObserver);
-      SudokuField sudokuField2 = new SudokuField(sudokuObserver);
-      Assertions.assertEquals(sudokuField1, sudokuField2);
-      sudokuField1.setFieldValue(3);
-      Assertions.assertNotEquals(sudokuField1, sudokuField2);
-    }
-    @Test
-    void thatToStringWorksCorrectly(){
+    void thatEqualsAndHashcodeWorksCorrectly() {
         SudokuSolver sudokuSolver = new BacktrackingSudokuSolver();
         SudokuObserver sudokuObserver = new SudokuBoard(sudokuSolver);
         SudokuField sudokuField1 = new SudokuField(sudokuObserver);
         SudokuField sudokuField2 = new SudokuField(sudokuObserver);
-        Assertions.assertEquals(sudokuField1.toString(),sudokuField2.toString());
+        Assertions.assertEquals(sudokuField1, sudokuField2);
+        Assertions.assertEquals(sudokuField1.hashCode(), sudokuField2.hashCode());
+        sudokuField1.setFieldValue(3);
+        Assertions.assertNotEquals(sudokuField1, sudokuField2);
+    }
+
+    @Test
+    void thatToStringWorksCorrectly() {
+        SudokuSolver sudokuSolver = new BacktrackingSudokuSolver();
+        SudokuObserver sudokuObserver = new SudokuBoard(sudokuSolver);
+        SudokuField sudokuField1 = new SudokuField(sudokuObserver);
+        SudokuField sudokuField2 = new SudokuField(sudokuObserver);
+        Assertions.assertEquals(sudokuField1.toString(), sudokuField2.toString());
 
         sudokuField1.setFieldValue(2);
         Assertions.assertNotEquals(sudokuField1.toString(), sudokuField2.toString());
     }
+
     @Test
-    void thatSudokuPartInheritedClassesEqualsAndHashCodeWorksCorrectly(){
+    void thatSudokuPartInheritedClassesEqualsAndHashCodeWorksCorrectly() {
         SudokuPart sudokuRow = new SudokuRow();
         SudokuPart sudokuBox = new SudokuBox();
         SudokuPart sudokuColumn1 = new SudokuColumn();
@@ -65,9 +69,14 @@ public class SudokuPartTest {
         Assertions.assertNotEquals(sudokuRow, sudokuBox);
         Assertions.assertNotEquals(sudokuBox, sudokuColumn1);
         Assertions.assertEquals(sudokuColumn1, sudokuColumn2);
+        Assertions.assertEquals(sudokuColumn1.hashCode(), sudokuColumn2.hashCode());
+        SudokuPart sudokuColumn3 = sudokuColumn1;
+        Assertions.assertEquals(sudokuColumn1, sudokuColumn3);
+        Assertions.assertNotEquals(sudokuColumn1, null);
     }
+
     @Test
-    void thatSudokuPartInheritedClassesToStringWorksCorrectly(){
+    void thatSudokuPartInheritedClassesToStringWorksCorrectly() {
         SudokuPart sudokuRow = new SudokuRow();
         SudokuPart sudokuBox = new SudokuBox();
         SudokuPart sudokuColumn1 = new SudokuColumn();

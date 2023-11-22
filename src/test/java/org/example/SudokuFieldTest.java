@@ -34,9 +34,8 @@ public class SudokuFieldTest {
         Assertions.assertNotEquals(10, sudokuField3.getFieldValue());
         Assertions.assertTrue(sudokuPart.verify());
     }
-
     @Test
-    public void thatFieldsEqualsCorrectly() {
+    public void thatFieldsEqualsCorrectly(){
         SudokuSolver sudokuSolver = new BacktrackingSudokuSolver();
         SudokuBoard sudokuBoard = new SudokuBoard(sudokuSolver);
         SudokuField sudokuField1 = new SudokuField(sudokuBoard);

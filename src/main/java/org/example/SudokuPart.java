@@ -2,17 +2,14 @@ package org.example;
 
 import com.google.common.base.Objects;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public abstract class SudokuPart {
     private final int size = 9;
     protected List<SudokuField> sudokuFields = Arrays.asList(new SudokuField[size]);
 
     public void setSudokuFields(List<SudokuField> sudokuFields) {
-        this.sudokuFields = sudokuFields;
+        this.sudokuFields = Collections.unmodifiableList(sudokuFields);
     }
 
     public List<SudokuField> getSudokuFields() {

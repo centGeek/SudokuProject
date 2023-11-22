@@ -207,4 +207,5 @@ class SudokuBoardTest {
         SudokuPart sudokuPart = new SudokuColumn();
         Assertions.assertNotEquals(sudokuBoard1, sudokuPart);
     }
+
 }

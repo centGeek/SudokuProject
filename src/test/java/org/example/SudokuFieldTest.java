@@ -48,7 +48,7 @@ public class SudokuFieldTest {
         Assertions.assertNotEquals(sudokuField1, sudokuField2);
 
         Assertions.assertNotEquals(sudokuField2, null);
-        Assertions.assertNotEquals(sudokuField1, sudokuBoard);
+        Assertions.assertFalse(sudokuField1.equals(sudokuBoard));
 
         sudokuField1 = sudokuField2;
 

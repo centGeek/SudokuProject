@@ -2,10 +2,11 @@ package org.example;
 
 import com.google.common.base.Objects;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
-public class SudokuBoard implements SudokuObserver {
+public class SudokuBoard implements SudokuObserver, Serializable {
     private final int number = 9;
     private int lastUpdatedRow;
     private int lastUpdatedColumn;
@@ -137,13 +138,27 @@ public class SudokuBoard implements SudokuObserver {
     @Override
     public String toString() {
         StringBuilder boardToString = new StringBuilder();
-        for (SudokuField[] sudokuFields : board) {
-            for (SudokuField sudokuField : sudokuFields) {
-                boardToString.append(sudokuField.getFieldValue()).append(" ");
+        for (int row = 0; row < 9; row++) {
+            String redText = "\u001B[31m" + "%s" + "\u001B[0m";
+            if (row % 3 == 0) {
+                boardToString.append("\n");
             }
+            for (int column = 0; column < 9; column++) {
+                if (column % 3 == 0) {
+                    boardToString.append("  ");
+                }
+                if (column > 2 && column < 6) {
+                    boardToString.append(String.format(redText, board[row][column].getFieldValue() + " "));
+                    continue;
+                }
+                if (row > 2 && row < 6) {
+                    boardToString.append(String.format(redText, board[row][column].getFieldValue() + " "));
+                } else {
+                    boardToString.append(board[row][column].getFieldValue()).append(" ");
+                }
+            }
+            boardToString.append("\n");
         }
-
-        return "SudokuBoard{" + "board=" + boardToString + "sudokuSolver=" + sudokuSolver + "}";
-
+        return "      SudokuBoard {" + boardToString + "sudokuSolver -> " + sudokuSolver + " }";
     }
 }

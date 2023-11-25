@@ -206,5 +206,18 @@ class SudokuBoardTest {
         SudokuPart sudokuPart = new SudokuColumn();
         Assertions.assertNotEquals(sudokuBoard1, sudokuPart);
     }
+    @Test
+    public void thatSerializationAndDeserializationWorksCorrectly(){
+        SudokuSolver sudokuSolver = new BacktrackingSudokuSolver();
+        SudokuBoard sudokuBoard = new SudokuBoard(sudokuSolver);
+        sudokuBoard.solveGame();
+        SudokuBoardDaoFactory sudokuBoardDaoFactory = new SudokuBoardDaoFactory();
+        Dao<SudokuBoard> fileDao = sudokuBoardDaoFactory.getFileDao("files/sudokuBoard.txt");
+        fileDao.write(sudokuBoard);
+
+        SudokuBoard read = fileDao.read();
+
+        Assertions.assertEquals(sudokuBoard.toString(), read.toString());
+    }
 
 }

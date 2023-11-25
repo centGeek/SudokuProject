@@ -1,10 +1,11 @@
 package org.example;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class BacktrackingSudokuSolver implements SudokuSolver {
+public class BacktrackingSudokuSolver implements SudokuSolver, Serializable {
     @Override
     public void solve(SudokuBoard board) {
         clearBoard(board);
@@ -58,6 +59,6 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
 
     @Override
     public String toString() {
-        return "BacktrackingSudokuSolver{}";
+        return "BacktrackingSudokuSolver";
     }
 }

@@ -36,6 +36,7 @@
     </developers>
 
     <reporting>
+        <outputDirectory>../Reports/ViewProject</outputDirectory>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -164,12 +165,12 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <version>22-ea+16</version>
+            <version>20</version>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
-            <version>22-ea+16</version>
+            <version>20</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

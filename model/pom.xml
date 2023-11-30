@@ -36,6 +36,7 @@
     </developers>
 
     <reporting>
+        <outputDirectory>../Reports/ModelProject</outputDirectory>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

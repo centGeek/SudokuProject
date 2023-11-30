@@ -16,8 +16,21 @@
         <maven.compiler.target>19</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+    <developers>
+        <developer>
+            <id>247832</id>
+            <name>Maciej Zielak</name>
+            <email>247832@edu.p.lodz.pl</email>
+        </developer>
+        <developer>
+            <id>247638</id>
+            <name>Lukasz Centkowski</name>
+            <email>247638@edu.p.lodz.pl</email>
+        </developer>
+    </developers>
 
     <reporting>
+        <outputDirectory>./Reports</outputDirectory>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

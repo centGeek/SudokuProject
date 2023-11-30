@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public abstract class SudokuPart {
+public abstract class SudokuPart implements Cloneable {
     private final int size = 9;
     protected List<SudokuField> sudokuFields = Arrays.asList(new SudokuField[size]);
 
@@ -55,6 +55,17 @@ public abstract class SudokuPart {
     @Override
     public int hashCode() {
         return Objects.hashCode(sudokuFields);
+    }
+
+    @Override
+    public SudokuPart clone() {
+        try {
+            SudokuPart clone = (SudokuPart) super.clone();
+            // TODO: copy mutable state here, so the clone can't change the internals of the original
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }
 

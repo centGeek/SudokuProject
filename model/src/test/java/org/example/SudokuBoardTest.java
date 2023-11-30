@@ -216,11 +216,10 @@ public class SudokuBoardTest {
         SudokuSolver sudokuSolver = new BacktrackingSudokuSolver();
         SudokuBoard sudokuBoard = new SudokuBoard(sudokuSolver);
         sudokuBoard.solveGame();
-        SudokuBoardDaoFactory sudokuBoardDaoFactory = new SudokuBoardDaoFactory();
 
 
         String path = ".\\sudokuBoard.txt";
-        Dao<SudokuBoard> fileDao = sudokuBoardDaoFactory.getFileDao(path);
+        Dao<SudokuBoard> fileDao = SudokuBoardDaoFactory.getFileDao(path);
         fileDao.write(sudokuBoard);
         File file1 = new File(path);
         fileDao.write(sudokuBoard);
@@ -232,7 +231,7 @@ public class SudokuBoardTest {
         Assertions.assertEquals(sudokuBoard.toString(), read1.toString());
 
         String fileName = ".\\drugiSudokuBoard.txt";
-        Dao<SudokuBoard> fileDao2 = sudokuBoardDaoFactory.getFileDao(fileName);
+        Dao<SudokuBoard> fileDao2 = SudokuBoardDaoFactory.getFileDao(fileName);
 
         fileDao2.write(sudokuBoard);
         SudokuBoard read2 = fileDao2.read();
@@ -250,11 +249,10 @@ public class SudokuBoardTest {
         SudokuSolver sudokuSolver = new BacktrackingSudokuSolver();
         SudokuBoard sudokuBoard = new SudokuBoard(sudokuSolver);
         sudokuBoard.solveGame();
-        SudokuBoardDaoFactory sudokuBoardDaoFactory = new SudokuBoardDaoFactory();
 
 
         String badPath = "./kompoMnieJedzie/xd";
-        Dao<SudokuBoard> fileDao3 = sudokuBoardDaoFactory.getFileDao(badPath);
+        Dao<SudokuBoard> fileDao3 = SudokuBoardDaoFactory.getFileDao(badPath);
         Assertions.assertThrows(Exception.class, () -> fileDao3.write(sudokuBoard));
         Assertions.assertThrows(Exception.class, fileDao3::read);
 

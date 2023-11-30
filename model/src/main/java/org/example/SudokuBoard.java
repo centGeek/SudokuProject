@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
-public class SudokuBoard implements SudokuObserver, Serializable {
+public class SudokuBoard implements SudokuObserver, Serializable, Cloneable {
     private final int number = 9;
     private int lastUpdatedRow;
     private int lastUpdatedColumn;
@@ -160,5 +160,16 @@ public class SudokuBoard implements SudokuObserver, Serializable {
             boardToString.append("\n");
         }
         return "      SudokuBoard {" + boardToString + "sudokuSolver -> " + sudokuSolver + " }";
+    }
+
+    @Override
+    public SudokuBoard clone() {
+        try {
+            SudokuBoard clone = (SudokuBoard) super.clone();
+            // TODO: copy mutable state here, so the clone can't change the internals of the original
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }

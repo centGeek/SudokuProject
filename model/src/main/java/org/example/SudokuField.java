@@ -4,7 +4,7 @@ import com.google.common.base.Objects;
 
 import java.io.Serializable;
 
-public class SudokuField implements Serializable {
+public class SudokuField implements Serializable, Comparable<SudokuField>, Cloneable {
 
     private int value;
     private final SudokuObserver sudokuObserver;
@@ -47,5 +47,21 @@ public class SudokuField implements Serializable {
     @Override
     public String toString() {
         return "SudokuField{" + "value=" + value + ", sudokuObserver=" + sudokuObserver + '}';
+    }
+
+    @Override
+    public int compareTo(SudokuField o) {
+        return this.value - o.getFieldValue();
+    }
+
+    @Override
+    public SudokuField clone() {
+        try {
+            SudokuField clone = (SudokuField) super.clone();
+            // TODO: copy mutable state here, so the clone can't change the internals of the original
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }

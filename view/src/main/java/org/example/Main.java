@@ -1,12 +1,16 @@
 package org.example;
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.fxml.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-
-import java.io.IOException;
 import java.util.Objects;
 
 public class Main extends Application {
@@ -15,7 +19,19 @@ public class Main extends Application {
     public void start(Stage stage) {
         try {
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/Main.fxml")));
-            Scene scene = new Scene(root, 400, 400);
+
+            Button button1 = (Button) root.lookup("#button1");
+            Button button2 = (Button) root.lookup("#button2");
+            Button button3 = (Button) root.lookup("#button3");
+            Label label = (Label) root.lookup("#label");
+
+            VBox vBox = new VBox(10);
+            label.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+            vBox.getChildren().addAll(label, button1, button2, button3);
+            vBox.setAlignment(Pos.CENTER);
+            vBox.setSpacing(10);
+
+            Scene scene = new Scene(vBox, 400, 400);
             stage.setScene(scene);
             stage.show();
         } catch (Exception e) {

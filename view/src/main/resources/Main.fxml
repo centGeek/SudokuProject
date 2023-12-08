@@ -32,11 +32,17 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.DifficultyController">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -78,16 +84,16 @@
       </menus>
     </MenuBar>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+
       <children>
-        <Label alignment="CENTER" layoutX="215.0" layoutY="56.0" style="&#10;" text="Wybierz swój poziom" textAlignment="CENTER" textFill="#1b0404" wrapText="false">
+        <Label fx:id="label" alignment="CENTER" layoutX="215.0" layoutY="56.0" style="&#10;" text="Wybierz swój poziom" textAlignment="CENTER" textFill="#1b0404" wrapText="false">
           <font>
             <Font size="18.0" />
           </font>
         </Label>
-            <ButtonBar layoutX="241.0" layoutY="118.0" prefHeight="35.0" prefWidth="46.0" />
-          <Button layoutX="264.0" layoutY="106.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="56.0" text="Easy" />
-            <Button layoutX="264.0" layoutY="153.0" mnemonicParsing="false" text="Normal" />
-            <Button layoutX="264.0" layoutY="198.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="56.0" text="Hard" />
+        <Button fx:id="button1" layoutX="264.0" layoutY="106.0" mnemonicParsing="false" onAction="#handleGenerateButton" prefHeight="25.0" prefWidth="56.0" text="Easy" />
+        <Button fx:id="button2" layoutX="264.0" layoutY="153.0" mnemonicParsing="false" onAction="#handleGenerateButton" text="Normal" />
+        <Button fx:id="button3" layoutX="264.0" layoutY="198.0" mnemonicParsing="false" onAction="#handleGenerateButton" prefHeight="25.0" prefWidth="56.0" text="Hard" />
       </children>
     </AnchorPane>
   </children>

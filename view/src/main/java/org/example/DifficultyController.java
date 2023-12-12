@@ -8,11 +8,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-import java.util.*;
+import java.util.Objects;
+import java.util.Random;
 
 public class DifficultyController {
 
@@ -73,14 +73,11 @@ public class DifficultyController {
     }
 
     private int howManyDeletedFields(String buttonName) {
-        switch (buttonName) {
-            case "Easy":
-                return DifficultyLevel.EASY.getValue();
-            case "Normal":
-                return DifficultyLevel.MEDIUM.getValue();
-            case "Hard":
-                return DifficultyLevel.HARD.getValue();
-        }
-        throw new RuntimeException("Something unexpected happened");
+        return switch (buttonName) {
+            case "Easy" -> DifficultyLevel.EASY.getValue();
+            case "Normal" -> DifficultyLevel.MEDIUM.getValue();
+            case "Hard" -> DifficultyLevel.HARD.getValue();
+            default -> throw new RuntimeException("Something unexpected happened");
+        };
     }
 }

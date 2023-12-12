@@ -61,9 +61,4 @@ public class BacktrackingSudokuSolver implements SudokuSolver, Serializable {
     public String toString() {
         return "BacktrackingSudokuSolver";
     }
-
-    @Override
-    public SudokuSolver clone() {
-        return new BacktrackingSudokuSolver();
-    }
 }

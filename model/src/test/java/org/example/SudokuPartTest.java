@@ -89,4 +89,22 @@ public class SudokuPartTest {
         Assertions.assertEquals(sudokuColumn1.toString(), sudokuColumn2.toString());
     }
 
+    @Test
+    public void thatSudokuBoxesCloneCorrectly(){
+        SudokuSolver sudokuSolver = new BacktrackingSudokuSolver();
+        SudokuObserver sudokuObserver = new SudokuBoard(sudokuSolver);
+        SudokuField sudokuField1 = new SudokuField(sudokuObserver);
+        SudokuField sudokuField2 = new SudokuField(sudokuObserver);
+        SudokuField sudokuField3 = new SudokuField(sudokuObserver);
+        SudokuField sudokuField4 = new SudokuField(sudokuObserver);
+        SudokuPart sudokuBox = new SudokuBox();
+        sudokuBox.setSudokuFields(List.of(sudokuField1, sudokuField2, sudokuField3, sudokuField4));
+
+        SudokuPart clone = sudokuBox.clone();
+
+        Assertions.assertNotSame(clone, sudokuBox);
+        Assertions.assertEquals(clone, sudokuBox);
+    }
+
+
 }

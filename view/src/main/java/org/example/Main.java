@@ -11,6 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+
 import java.util.Objects;
 
 public class Main extends Application {
@@ -25,13 +26,13 @@ public class Main extends Application {
             Button button3 = (Button) root.lookup("#button3");
             Label label = (Label) root.lookup("#label");
 
-            VBox vBox = new VBox(10);
+            VBox myVBox = new VBox(10);
             label.setFont(Font.font("Arial", FontWeight.BOLD, 16));
-            vBox.getChildren().addAll(label, button1, button2, button3);
-            vBox.setAlignment(Pos.CENTER);
-            vBox.setSpacing(10);
+            myVBox.getChildren().addAll(label, button1, button2, button3);
+            myVBox.setAlignment(Pos.CENTER);
+            myVBox.setSpacing(10);
 
-            Scene scene = new Scene(vBox, 400, 400);
+            Scene scene = new Scene(myVBox, 400, 400);
             stage.setScene(scene);
             stage.show();
         } catch (Exception e) {

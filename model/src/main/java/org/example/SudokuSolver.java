@@ -1,6 +1,5 @@
 package org.example;
 
-public interface SudokuSolver extends Cloneable {
+public interface SudokuSolver {
     void solve(SudokuBoard board);
-    SudokuSolver clone();
 }

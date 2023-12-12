@@ -60,9 +60,7 @@ public abstract class SudokuPart implements Cloneable {
     @Override
     public SudokuPart clone() {
         try {
-            SudokuPart clone = (SudokuPart) super.clone();
-            // TODO: copy mutable state here, so the clone can't change the internals of the original
-            return clone;
+            return (SudokuPart) super.clone();
         } catch (CloneNotSupportedException e) {
             throw new AssertionError();
         }

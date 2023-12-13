@@ -60,18 +60,18 @@ public class SudokuFieldTest {
 
         Assertions.assertEquals(sudokuField1, sudokuField2);
     }
+
     @Test
-    public void thatComparableWorksCorrectlyForSudokuField(){
+    public void thatComparableWorksCorrectlyForSudokuField() {
         SudokuSolver sudokuSolver = new BacktrackingSudokuSolver();
         SudokuObserver sudokuObserver = new SudokuBoard(sudokuSolver);
         SudokuField sudokuField1 = new SudokuField(sudokuObserver);
-        SudokuField sudokuField2 = new SudokuField(sudokuObserver);
-        SudokuField sudokuField3 = new SudokuField(sudokuObserver);
-        SudokuField sudokuField4 = new SudokuField(sudokuObserver);
-
         sudokuField1.setFieldValue(4);
+        SudokuField sudokuField2 = new SudokuField(sudokuObserver);
         sudokuField2.setFieldValue(7);
+        SudokuField sudokuField3 = new SudokuField(sudokuObserver);
         sudokuField3.setFieldValue(3);
+        SudokuField sudokuField4 = new SudokuField(sudokuObserver);
         sudokuField4.setFieldValue(3);
         List<SudokuField> sudokuFieldList = new LinkedList<>(List.of(sudokuField1, sudokuField2,
                 sudokuField3, sudokuField4));
@@ -83,10 +83,11 @@ public class SudokuFieldTest {
         Assertions.assertEquals(0, sudokuField3.compareTo(sudokuField4));
 
 
-        Assertions.assertThrows(NullPointerException.class,() -> sudokuField3.compareTo(null));
+        Assertions.assertThrows(NullPointerException.class, () -> sudokuField3.compareTo(null));
     }
+
     @Test
-    public void thatSudokuFieldsCloneWorksCorrectly(){
+    public void thatSudokuFieldsCloneWorksCorrectly() {
         SudokuSolver sudokuSolver = new BacktrackingSudokuSolver();
         SudokuObserver sudokuObserver = new SudokuBoard(sudokuSolver);
         SudokuField sudokuField = new SudokuField(sudokuObserver);

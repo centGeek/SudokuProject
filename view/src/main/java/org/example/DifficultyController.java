@@ -12,12 +12,14 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import java.util.Objects;
-import java.util.Random;
+
+import static org.example.DifficultyLevel.copySudokuBoard;
+import static org.example.DifficultyLevel.deleteRandomNumbers;
 
 public class DifficultyController {
 
     @FXML
-    private void handleGenerateButton(ActionEvent event) {
+    public void handleGenerateButton(ActionEvent event) {
 
         try {
             Button clickedButton = (Button) event.getSource();
@@ -44,40 +46,5 @@ public class DifficultyController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-
-    public SudokuBoard copySudokuBoard() {
-        SudokuSolver sudokuSolver = new BacktrackingSudokuSolver();
-        SudokuBoard sudokuBoard = new SudokuBoard(sudokuSolver);
-        sudokuBoard.solveGame();
-        return sudokuBoard.clone();
-    }
-
-    public SudokuBoard deleteRandomNumbers(SudokuBoard sudokuBoard, String buttonName) {
-        int amount = howManyDeletedFields(buttonName);
-        Random random = new Random();
-
-        int deleted = 0;
-        while (deleted < amount) {
-            int row = random.nextInt(9);
-            int col = random.nextInt(9);
-
-            if (sudokuBoard.get(row, col) != 0) {
-                sudokuBoard.set(row, col, 0);
-                deleted++;
-            }
-        }
-
-        return sudokuBoard;
-    }
-
-    private int howManyDeletedFields(String buttonName) {
-        return switch (buttonName) {
-            case "Easy" -> DifficultyLevel.EASY.getValue();
-            case "Normal" -> DifficultyLevel.MEDIUM.getValue();
-            case "Hard" -> DifficultyLevel.HARD.getValue();
-            default -> throw new RuntimeException("Something unexpected happened");
-        };
     }
 }

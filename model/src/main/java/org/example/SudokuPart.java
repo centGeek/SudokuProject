@@ -2,11 +2,7 @@ package org.example;
 
 import com.google.common.base.Objects;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public abstract class SudokuPart implements Cloneable {
     private final int size = 9;
@@ -57,14 +53,14 @@ public abstract class SudokuPart implements Cloneable {
         return Objects.hashCode(sudokuFields);
     }
 
-    @Override
-    public SudokuPart clone() {
-        try {
-            return (SudokuPart) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
+    protected List<SudokuField> getSudokuFieldsCopy() {
+        List<SudokuField> fieldsList = new ArrayList<>();
+        for (int i = 0; i < this.getSudokuFields().size(); i++) {
+            fieldsList.add(this.getSudokuFields().get(i).clone());
         }
+        return fieldsList;
     }
+
 }
 
 

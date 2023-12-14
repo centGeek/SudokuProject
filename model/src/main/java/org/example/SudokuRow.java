@@ -9,7 +9,7 @@ public class SudokuRow extends SudokuPart {
     }
 
     @Override
-    public SudokuPart clone() {
+    public SudokuRow clone() {
         SudokuRow sudokuRow;
         try {
             sudokuRow = (SudokuRow) super.clone();

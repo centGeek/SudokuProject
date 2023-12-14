@@ -97,13 +97,26 @@ public class SudokuPartTest {
         SudokuField sudokuField2 = new SudokuField(sudokuObserver);
         SudokuField sudokuField3 = new SudokuField(sudokuObserver);
         SudokuField sudokuField4 = new SudokuField(sudokuObserver);
+
         SudokuBox sudokuBox = new SudokuBox();
+        SudokuColumn sudokuColumn = new SudokuColumn();
+        SudokuRow sudokuRow = new SudokuRow();
         sudokuBox.setSudokuFields(List.of(sudokuField1, sudokuField2, sudokuField3, sudokuField4));
+        sudokuColumn.setSudokuFields(List.of(sudokuField1, sudokuField2, sudokuField3, sudokuField4));
+        sudokuRow.setSudokuFields(List.of(sudokuField1, sudokuField2, sudokuField3, sudokuField4));
 
-        SudokuBox clone = sudokuBox.clone();
+        SudokuBox boxClone = sudokuBox.clone();
+        SudokuRow rowClone = sudokuRow.clone();
+        SudokuColumn columnClone = sudokuColumn.clone();
 
-        Assertions.assertNotSame(clone, sudokuBox);
-        Assertions.assertEquals(clone, sudokuBox);
+        Assertions.assertNotSame(boxClone, sudokuBox);
+        Assertions.assertEquals(boxClone, sudokuBox);
+
+        Assertions.assertNotSame(rowClone, sudokuRow);
+        Assertions.assertEquals(rowClone, sudokuRow);
+
+        Assertions.assertNotSame(columnClone, sudokuColumn);
+        Assertions.assertEquals(columnClone, sudokuColumn);
     }
 
 

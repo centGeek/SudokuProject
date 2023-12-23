@@ -3,6 +3,7 @@ package org.example;
 import com.google.common.base.Objects;
 
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -83,6 +84,12 @@ public class SudokuBoard implements SudokuObserver, Serializable, Cloneable {
     public Integer get(int x, int y) {
         if (x >= 0 && x <= 9 && y >= 0 && y <= 9) {
             return board[x][y].getFieldValue();
+        }
+        return null;
+    }
+    public SudokuField getSudokuField(int x, int y) {
+        if (x >= 0 && x <= 9 && y >= 0 && y <= 9) {
+            return board[x][y];
         }
         return null;
     }
@@ -174,6 +181,11 @@ public class SudokuBoard implements SudokuObserver, Serializable, Cloneable {
             for (int column = 0; column < number; column++) {
                 sudokuBoard.set(row, column, board[row][column].getFieldValue());
             }
+        }
+        try {
+            this.sudokuSolver.getClass().getDeclaredConstructor().newInstance();
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            throw new RuntimeException(e);
         }
         return sudokuBoard;
     }

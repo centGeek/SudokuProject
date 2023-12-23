@@ -26,7 +26,6 @@ public enum DifficultyLevel {
     public static SudokuBoard deleteRandomNumbers(SudokuBoard sudokuBoard, String buttonName) {
         int amount = howManyDeletedFields(buttonName);
         Random random = new Random();
-
         int deleted = 0;
         while (deleted < amount) {
             int row = random.nextInt(9);
@@ -43,9 +42,9 @@ public enum DifficultyLevel {
 
     private static int howManyDeletedFields(String buttonName) {
         return switch (buttonName) {
-            case "Easy" -> DifficultyLevel.EASY.getValue();
-            case "Normal" -> DifficultyLevel.MEDIUM.getValue();
-            case "Hard" -> DifficultyLevel.HARD.getValue();
+            case "button1" -> DifficultyLevel.EASY.getValue();
+            case "button2" -> DifficultyLevel.MEDIUM.getValue();
+            case "button3" -> DifficultyLevel.HARD.getValue();
             default -> throw new RuntimeException("Something unexpected happened");
         };
     }

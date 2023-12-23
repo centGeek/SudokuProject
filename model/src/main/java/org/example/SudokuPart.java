@@ -60,7 +60,18 @@ public abstract class SudokuPart implements Cloneable {
         }
         return fieldsList;
     }
-
+    @Override
+    public SudokuPart clone() {
+        SudokuPart sudokuPart;
+        try {
+            sudokuPart = (SudokuPart) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+        List<SudokuField> fieldsList = getSudokuFieldsCopy();
+        sudokuPart.setSudokuFields(fieldsList);
+        return sudokuPart;
+    }
 }
 
 

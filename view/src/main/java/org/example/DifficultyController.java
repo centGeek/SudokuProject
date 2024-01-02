@@ -20,22 +20,24 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import javafx.util.converter.IntegerStringConverter;
-
+import java.util.logging.Logger;
+import org.example.exceptions.ProcessingDataException;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.ResourceBundle;
-
-import static org.example.DifficultyLevel.copySudokuBoard;
-import static org.example.DifficultyLevel.deleteRandomNumbers;
-
+import static org.example.DifficultyLevel.*;
 
 public class DifficultyController {
-    private static final int size = 9;
-    private final Locale localePL = Locale.getDefault();
-    private final Locale localeEN = new Locale("en", "EN");
-
-    private final ResourceBundle langText = ResourceBundle.getBundle("BoardText", localeEN);
+    private LanguageManager languageManager;
+    private ResourceBundle langText;
+    private final static Logger logger = Logger.getLogger(DifficultyController.class.getName());
+    public void setLanguageManager(LanguageManager languageManager) {
+        this.languageManager = languageManager;
+    }
+    private Locale locale;
+    private SudokuBoard sudokuBoard = new SudokuBoard(new BacktrackingSudokuSolver());
+    private SudokuBoard sudokuBoardInGame = new SudokuBoard(new BacktrackingSudokuSolver());
 
     @FXML
     public void handleGenerateButton(ActionEvent actionEvent) {
@@ -43,7 +45,11 @@ public class DifficultyController {
             Button clickedButton = (Button) actionEvent.getSource();
             String buttonName = clickedButton.getId();
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/Board.fxml")));
-
+            String language = languageManager.getLanguage();
+            locale = getLocale(language);
+            langText = ResourceBundle.getBundle("BoardText", locale);
+            Button fromFile = (Button) root.lookup("#fromFile");
+            Button toFile = (Button) root.lookup("#toFile");
             Stage stage = (Stage) ((javafx.scene.Node) actionEvent.getSource()).getScene().getWindow();
             Label label2 = (Label) root.lookup("#label2");
 
@@ -56,55 +62,97 @@ public class DifficultyController {
             mainContainer.getChildren().add(pane);
 
             GridPane gridPane = (GridPane) root.lookup("#gridPane");
+            SudokuBoard sudokuBoardCopied;
 
-            SudokuBoard sudokuBoardCopied = copySudokuBoard();
-            SudokuBoard sudokuBoard = deleteRandomNumbers(sudokuBoardCopied, buttonName);
+            sudokuBoard = startGame();
+            sudokuBoardCopied = clone(sudokuBoard);
+            sudokuBoardInGame = deleteRandomNumbers(sudokuBoardCopied, buttonName, locale);
+            textFieldIteration(sudokuBoardInGame, gridPane);
+            checkButtonConfigured(root, sudokuBoardInGame, label2);
 
-            Button button = (Button) root.lookup("#check");
-            button.setText(langText.getString("check"));
-            button.setOnAction(e -> {
-                if (validate(sudokuBoard)) {
-                    label2.setText(langText.getString("win"));
-                    label2.setStyle("-fx-text-fill: green");
-                    label2.setFont(javafx.scene.text.Font.font("Arial", FontWeight.BOLD, 20));
-                } else {
-                    label2.setText(langText.getString("lose"));
-                    label2.setStyle("-fx-text-fill: red");
-                    label2.setFont(javafx.scene.text.Font.font("Arial", FontWeight.BOLD, 20));
-                }
-            });
 
-            for (int row = 0; row < 9; row++) {
-                for (int col = 0; col < 9; col++) {
-                    int value = sudokuBoard.get(row, col);
-
-                    Label label = new Label(value != 0 ? String.valueOf(value) : "");
-                    label.setMaxWidth(Double.MAX_VALUE - 10.0);
-                    label.setMaxHeight(Double.MAX_VALUE - 10.0);
-                    label.setAlignment(Pos.CENTER);
-                    TextField textField = generateTextField(value, sudokuBoardCopied, row, col);
-                    gridPane.add(textField, col, row);
-                }
-            }
             stage.setScene(new Scene(mainContainer));
             stage.show();
-        } catch (IOException |
-                 NoSuchMethodException ex) {
-            throw new RuntimeException(ex);
+            toFile.setText(langText.getString("toFile"));
+            DaoDecorator daoDecorator = new FileDaoDecorator();
+
+            toFile.setOnAction(e -> {
+                daoDecorator.saveOriginalAndCopy(sudokuBoardInGame, sudokuBoard, locale);
+            });
+            fromFile.setText(langText.getString("fromFile"));
+            fromFile.setOnAction(e -> {
+                daoDecorator.readOriginal(locale);
+                daoDecorator.readCopy(locale);
+            });
+
+        } catch (IOException | NoSuchMethodException ex) {
+            String message = ResourceBundle.getBundle("messages", locale).getString("errorBoardfxml");
+            throw new ProcessingDataException(message);
         }
-
-
     }
 
 
-    private TextField generateTextField(int value, SudokuBoard sudokuBoard, int row, int col) throws NoSuchMethodException {
+    void textFieldIteration(SudokuBoard sudokuBoardInGame, GridPane gridPane) throws NoSuchMethodException {
+        for (int row = 0; row < 9; row++) {
+            for (int col = 0; col < 9; col++) {
+                int value = sudokuBoardInGame.get(row, col);
+
+                Label label = new Label(value != 0 ? String.valueOf(value) : "");
+                label.setMaxWidth(Double.MAX_VALUE - 10.0);
+                label.setMaxHeight(Double.MAX_VALUE - 10.0);
+                label.setAlignment(Pos.CENTER);
+                TextField textField = generateTextField(value, sudokuBoardInGame, row, col);
+                gridPane.add(textField, col, row);
+            }
+        }
+    }
+
+    private void checkButtonConfigured(Parent root, SudokuBoard sudokuBoardInGame, Label label2) {
+        Button button = (Button) root.lookup("#check");
+        button.setText(langText.getString("check"));
+        button.setOnAction(e -> {
+            if (validate(sudokuBoardInGame)) {
+                label2.setText(langText.getString("win"));
+                label2.setStyle("-fx-text-fill: green");
+                label2.setFont(javafx.scene.text.Font.font("Arial", FontWeight.BOLD, 20));
+            } else {
+                label2.setText(langText.getString("lose"));
+                label2.setStyle("-fx-text-fill: red");
+                label2.setFont(javafx.scene.text.Font.font("Arial", FontWeight.BOLD, 20));
+            }
+        });
+    }
+
+    Locale getLocale(String language) {
+        if (language.equalsIgnoreCase("english"))
+            locale = new Locale("en");
+        else if (language.equalsIgnoreCase("polish"))
+            locale = new Locale("pl");
+        else
+            locale = new Locale("en");
+        return locale;
+    }
+
+    private static SudokuBoard clone(SudokuBoard sudokuBoard) {
+        SudokuSolver sudokuSolver = new BacktrackingSudokuSolver();
+        SudokuBoard sudokuBoardCopied = new SudokuBoard(sudokuSolver);
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                sudokuBoardCopied.set(i, j, sudokuBoard.get(i, j));
+            }
+        }
+        return sudokuBoardCopied;
+    }
+
+
+    private TextField generateTextField(int value, SudokuBoard sudokuBoardInGame, int row, int col) throws NoSuchMethodException {
 
         JavaBeanIntegerPropertyBuilder javaBeanIntegerPropertyBuilder = JavaBeanIntegerPropertyBuilder.create();
 
 
         JavaBeanIntegerProperty bean;
 
-        bean = javaBeanIntegerPropertyBuilder.bean(sudokuBoard.getSudokuField(row, col)).name("value")
+        bean = javaBeanIntegerPropertyBuilder.bean(sudokuBoardInGame.getSudokuField(row, col)).name("value")
                 .setter("setFieldValue").getter("getFieldValue").build();
 
 
@@ -117,11 +165,25 @@ public class DifficultyController {
         textField.setMaxHeight(Double.MAX_VALUE - 12.0);
         textField.setAlignment(Pos.CENTER);
 
-
         String borderWidth = "0";
         String borderColor = "black";
 
 
+        borderWidth = settingBorderWidth(row, col, borderWidth);
+
+        textField.setStyle("-fx-border-width: " + borderWidth + "; -fx-border-color: " + borderColor + ";");
+
+        if (value != 0) {
+            textField.setEditable(false);
+            textField.setText(Integer.toString(value));
+        } else {
+            textField.setCursor(Cursor.HAND);
+        }
+
+        return textField;
+    }
+
+    String settingBorderWidth(int row, int col, String borderWidth) {
         if ((row % 3 == 0) && (col % 3 == 0)) {
             borderWidth = "2 0 0 2";
         } else if ((row % 3 == 0) && (col % 3 == 2)) {
@@ -139,30 +201,25 @@ public class DifficultyController {
         } else if (col % 3 == 2) {
             borderWidth = "0 2 0 0";
         }
-
-        textField.setStyle("-fx-border-width: " + borderWidth + "; -fx-border-color: " + borderColor + ";");
-
-        if (value != 0) {
-            textField.setEditable(false);
-            textField.setText(Integer.toString(value));
-        } else {
-            textField.setCursor(Cursor.HAND);
-        }
-
-        return textField;
+        return borderWidth;
     }
 
-    private boolean validate(SudokuBoard sudokuBoard) {
+    boolean validate(SudokuBoard sudokuBoardInGame) {
+        ResourceBundle win = ResourceBundle.getBundle("logger", locale);
+
         for (int row = 0; row < 9; row++) {
             for (int col = 0; col < 9; col++) {
-                if (sudokuBoard.get(row, col) == 0) {
+                if (sudokuBoardInGame.get(row, col) == 0) {
+                    logger.info(win.getString("lose"));
                     return false;
                 }
-                if (!sudokuBoard.verify(row, col)) {
+                if (!sudokuBoardInGame.verify(row, col)) {
+                    logger.info(win.getString("lose"));
                     return false;
                 }
             }
         }
+        logger.info(win.getString("win"));
         return true;
     }
 

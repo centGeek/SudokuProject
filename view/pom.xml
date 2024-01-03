@@ -17,15 +17,15 @@
 
     <licenses>
         <license>
-            <name>The Apache License, Version 2.0 </name>
+            <name>The Apache License, Version 2.0</name>
             <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
         </license>
         <license>
-                <name>Oracle Binary Code License Agreement for the Java SE Platform Products and JavaFX</name>
-                <url>https://www.oracle.com/technetwork/java/javase/terms/license/index.html</url>
-                <distribution>repo</distribution>
+            <name>Oracle Binary Code License Agreement for the Java SE Platform Products and JavaFX</name>
+            <url>https://www.oracle.com/technetwork/java/javase/terms/license/index.html</url>
+            <distribution>repo</distribution>
         </license>
-        </licenses>
+    </licenses>
 
     <developers>
         <developer>

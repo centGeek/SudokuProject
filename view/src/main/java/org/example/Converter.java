@@ -7,7 +7,8 @@ public class Converter extends NumberStringConverter {
     public Number fromString(String s) {
         if (s.isEmpty()) {
             return 0;
-        } if(s.length() == 1) {
+        }
+        if (s.length() == 1) {
             return Integer.parseInt(s);
         }
 

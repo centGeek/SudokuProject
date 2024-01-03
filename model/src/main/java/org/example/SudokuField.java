@@ -1,6 +1,9 @@
 package org.example;
 
 import com.google.common.base.Objects;
+import org.example.exceptions.SudokuBoardCloneFailureException;
+import org.example.exceptions.SudokuFieldNullValueException;
+import org.example.exceptions.SudokuFieldWrongException;
 
 import java.io.Serializable;
 
@@ -18,9 +21,13 @@ public class SudokuField implements Serializable, Comparable<SudokuField>, Clone
     }
 
     public void setFieldValue(int value) {
-        if (value >= 0 && value <= 9) {
-            this.value = value;
+        if (value < 0) {
+            throw new SudokuFieldWrongException("tooSmallValue");
         }
+        if (value > 9) {
+            throw new SudokuFieldWrongException("tooBigValue");
+        }
+        this.value = value;
     }
 
     public int getFieldValue() {
@@ -51,15 +58,19 @@ public class SudokuField implements Serializable, Comparable<SudokuField>, Clone
 
     @Override
     public int compareTo(SudokuField o) {
+        if (o == null) {
+            throw new SudokuFieldNullValueException("nullGiven");
+        }
         return this.value - o.getFieldValue();
     }
 
     @Override
     public SudokuField clone() {
+
         try {
             return (SudokuField) super.clone();
         } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
+            throw new SudokuBoardCloneFailureException();
         }
     }
 }

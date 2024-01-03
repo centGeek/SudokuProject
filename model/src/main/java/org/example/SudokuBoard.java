@@ -1,6 +1,8 @@
 package org.example;
 
 import com.google.common.base.Objects;
+import org.example.exceptions.SudokuBoardCloneFailureException;
+import org.example.exceptions.SudokuFieldWrongException;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
@@ -87,6 +89,7 @@ public class SudokuBoard implements SudokuObserver, Serializable, Cloneable {
         }
         return null;
     }
+
     public SudokuField getSudokuField(int x, int y) {
         if (x >= 0 && x <= 9 && y >= 0 && y <= 9) {
             return board[x][y];
@@ -97,6 +100,8 @@ public class SudokuBoard implements SudokuObserver, Serializable, Cloneable {
     public void set(int x, int y, int value) {
         if (x >= 0 && x <= 9 && y >= 0 && y <= 9) {
             board[x][y].setFieldValue(value);
+        } else {
+            throw new SudokuFieldWrongException("illegalIndex");
         }
     }
 
@@ -174,18 +179,17 @@ public class SudokuBoard implements SudokuObserver, Serializable, Cloneable {
         SudokuBoard sudokuBoard;
         try {
             sudokuBoard = (SudokuBoard) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new RuntimeException(e);
-        }
-        for (int row = 0; row < number; row++) {
-            for (int column = 0; column < number; column++) {
-                sudokuBoard.set(row, column, board[row][column].getFieldValue());
+
+            for (int row = 0; row < number; row++) {
+                for (int column = 0; column < number; column++) {
+                    sudokuBoard.set(row, column, board[row][column].getFieldValue());
+                }
             }
-        }
-        try {
+
             this.sudokuSolver.getClass().getDeclaredConstructor().newInstance();
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            throw new RuntimeException(e);
+        } catch (CloneNotSupportedException | NoSuchMethodException | InstantiationException | IllegalAccessException
+                 | InvocationTargetException e) {
+            throw new SudokuBoardCloneFailureException();
         }
         return sudokuBoard;
     }

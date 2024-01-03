@@ -8,11 +8,8 @@ public class CloneFailureException extends RuntimeException {
 
     String message;
 
-    public CloneFailureException() {
-        String message = "cloneFailure";
+    public CloneFailureException(String message) {
+        this.message = message;
     }
 
-    public String getLocalizedMessage(Locale locale) {
-        return Messages.getMessage(message, locale);
-    }
 }

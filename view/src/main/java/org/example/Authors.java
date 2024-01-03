@@ -8,6 +8,7 @@ public class Authors extends ListResourceBundle {
             {"author1", "Łukasz Centkowski"},
             {"author2", "Maciej Zielak"}
     };
+
     @Override
     protected Object[][] getContents() {
         return authors;

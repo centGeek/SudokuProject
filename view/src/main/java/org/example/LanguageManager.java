@@ -29,6 +29,7 @@ public class LanguageManager {
             createConfigFile();
         }
     }
+
     private void createConfigFile() {
         try (OutputStream output = new FileOutputStream(CONFIG_FILE)) {
             properties.setProperty(LANGUAGE_KEY, "english");

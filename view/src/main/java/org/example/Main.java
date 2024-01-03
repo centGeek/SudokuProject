@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 public class Main extends Application {
 
     private final LanguageManager languageManager = new LanguageManager();
-    private Logger logger = Logger.getLogger(Main.class.getName());
+    private final Logger logger = Logger.getLogger(Main.class.getName());
     private ResourceBundle langText;
     private Label label;
     private Label label1;
@@ -49,7 +49,6 @@ public class Main extends Application {
         difficultyController.setLanguageManager(languageManager);
 
 
-        VBox myVBox = new VBox(10);
         label = (Label) root.lookup("#label");
         label1 = (Label) root.lookup("#label1");
 
@@ -78,10 +77,11 @@ public class Main extends Application {
         label1.setFont(Font.font("Arial", FontWeight.BOLD, 20));
         Authors authorsClass = new Authors();
         Object[][] contents = authorsClass.getContents();
-        authors = new Label(langText.getString("authors")+contents[0][1] + ", " + contents[1][1]);
+        authors = new Label(langText.getString("authors") + contents[0][1] + ", " + contents[1][1]);
         authors.setFont(Font.font("Arial", FontWeight.NORMAL, 10));
         authors.setAlignment(Pos.CENTER);
 
+        VBox myVBox = new VBox(10);
         myVBox.getChildren().addAll(label1, label, button1, button2, button3, authors);
 
         myVBox.setAlignment(Pos.CENTER);

@@ -1,6 +1,7 @@
 package org.example;
 
 import com.google.common.base.Objects;
+import org.example.exceptions.SudokuFieldCloneFailureException;
 
 import java.util.*;
 
@@ -60,13 +61,14 @@ public abstract class SudokuPart implements Cloneable {
         }
         return fieldsList;
     }
+
     @Override
     public SudokuPart clone() {
         SudokuPart sudokuPart;
         try {
             sudokuPart = (SudokuPart) super.clone();
         } catch (CloneNotSupportedException e) {
-            throw new RuntimeException(e);
+            throw new SudokuFieldCloneFailureException();
         }
         List<SudokuField> fieldsList = getSudokuFieldsCopy();
         sudokuPart.setSudokuFields(fieldsList);

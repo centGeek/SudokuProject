@@ -20,21 +20,27 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import javafx.util.converter.IntegerStringConverter;
-import java.util.logging.Logger;
+import org.example.exceptions.FileDaoException;
 import org.example.exceptions.ProcessingDataException;
+
 import java.io.IOException;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.ResourceBundle;
-import static org.example.DifficultyLevel.*;
+import java.util.logging.Logger;
+
+import static org.example.DifficultyLevel.deleteRandomNumbers;
+import static org.example.DifficultyLevel.startGame;
 
 public class DifficultyController {
     private LanguageManager languageManager;
     private ResourceBundle langText;
-    private final static Logger logger = Logger.getLogger(DifficultyController.class.getName());
+    public static final Logger logger = Logger.getLogger(DifficultyController.class.getName());
+
     public void setLanguageManager(LanguageManager languageManager) {
         this.languageManager = languageManager;
     }
+
     private Locale locale;
     private SudokuBoard sudokuBoard = new SudokuBoard(new BacktrackingSudokuSolver());
     private SudokuBoard sudokuBoardInGame = new SudokuBoard(new BacktrackingSudokuSolver());
@@ -42,47 +48,55 @@ public class DifficultyController {
     @FXML
     public void handleGenerateButton(ActionEvent actionEvent) {
         try {
-            Button clickedButton = (Button) actionEvent.getSource();
-            String buttonName = clickedButton.getId();
-            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/Board.fxml")));
             String language = languageManager.getLanguage();
             locale = getLocale(language);
             langText = ResourceBundle.getBundle("BoardText", locale);
-            Button fromFile = (Button) root.lookup("#fromFile");
-            Button toFile = (Button) root.lookup("#toFile");
-            Stage stage = (Stage) ((javafx.scene.Node) actionEvent.getSource()).getScene().getWindow();
-            Label label2 = (Label) root.lookup("#label2");
 
             VBox mainContainer = new VBox();
             mainContainer.setAlignment(Pos.CENTER);
             mainContainer.setMinSize(840, 650);
             mainContainer.setMaxSize(2000, 2000);
 
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/Board.fxml")));
             Pane pane = (Pane) root.lookup("#pane");
             mainContainer.getChildren().add(pane);
 
-            GridPane gridPane = (GridPane) root.lookup("#gridPane");
             SudokuBoard sudokuBoardCopied;
 
             sudokuBoard = startGame();
             sudokuBoardCopied = clone(sudokuBoard);
+            Button clickedButton = (Button) actionEvent.getSource();
+            String buttonName = clickedButton.getId();
             sudokuBoardInGame = deleteRandomNumbers(sudokuBoardCopied, buttonName, locale);
+            GridPane gridPane = (GridPane) root.lookup("#gridPane");
             textFieldIteration(sudokuBoardInGame, gridPane);
+            Label label2 = (Label) root.lookup("#label2");
             checkButtonConfigured(root, sudokuBoardInGame, label2);
 
-
+            Stage stage = (Stage) ((javafx.scene.Node) actionEvent.getSource()).getScene().getWindow();
             stage.setScene(new Scene(mainContainer));
             stage.show();
+            Button toFile = (Button) root.lookup("#toFile");
             toFile.setText(langText.getString("toFile"));
             DaoDecorator daoDecorator = new FileDaoDecorator();
 
             toFile.setOnAction(e -> {
-                daoDecorator.saveOriginalAndCopy(sudokuBoardInGame, sudokuBoard, locale);
+                try {
+                    daoDecorator.saveOriginalAndCopy(sudokuBoardInGame, sudokuBoard, locale);
+                } catch (FileDaoException ex) {
+                    logger.severe(ex.getMessage());
+                }
             });
+            Button fromFile = (Button) root.lookup("#fromFile");
             fromFile.setText(langText.getString("fromFile"));
             fromFile.setOnAction(e -> {
-                daoDecorator.readOriginal(locale);
-                daoDecorator.readCopy(locale);
+                try {
+                    daoDecorator.readOriginal(locale);
+                    daoDecorator.readCopy(locale);
+                } catch (FileDaoException ex) {
+                    logger.severe(ex.getMessage());
+
+                }
             });
 
         } catch (IOException | NoSuchMethodException ex) {
@@ -123,13 +137,14 @@ public class DifficultyController {
         });
     }
 
-    Locale getLocale(String language) {
-        if (language.equalsIgnoreCase("english"))
+    private Locale getLocale(String language) {
+        if (language.equalsIgnoreCase("english")) {
             locale = new Locale("en");
-        else if (language.equalsIgnoreCase("polish"))
+        } else if (language.equalsIgnoreCase("polish")) {
             locale = new Locale("pl");
-        else
+        } else {
             locale = new Locale("en");
+        }
         return locale;
     }
 
@@ -145,7 +160,8 @@ public class DifficultyController {
     }
 
 
-    private TextField generateTextField(int value, SudokuBoard sudokuBoardInGame, int row, int col) throws NoSuchMethodException {
+    private TextField generateTextField(int value, SudokuBoard sudokuBoardInGame, int row, int col)
+            throws NoSuchMethodException {
 
         JavaBeanIntegerPropertyBuilder javaBeanIntegerPropertyBuilder = JavaBeanIntegerPropertyBuilder.create();
 
@@ -183,7 +199,7 @@ public class DifficultyController {
         return textField;
     }
 
-    String settingBorderWidth(int row, int col, String borderWidth) {
+    private String settingBorderWidth(int row, int col, String borderWidth) {
         if ((row % 3 == 0) && (col % 3 == 0)) {
             borderWidth = "2 0 0 2";
         } else if ((row % 3 == 0) && (col % 3 == 2)) {

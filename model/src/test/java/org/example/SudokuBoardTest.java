@@ -1,5 +1,7 @@
 package org.example;
 
+import org.example.exceptions.SudokuBoardCloneFailureException;
+import org.example.exceptions.SudokuFieldWrongException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -7,6 +9,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class SudokuBoardTest {
     @Test
@@ -84,12 +89,13 @@ public class SudokuBoardTest {
         SudokuBoard sudokuBoard = new SudokuBoard(sudokuSolver);
 
         sudokuBoard.set(0, 0, 4);
-        sudokuBoard.set(0, 1, 10);
-        sudokuBoard.set(0, -2, 1);
-        sudokuBoard.set(0, 10, 2);
-        sudokuBoard.set(0, 10, -3);
-        sudokuBoard.set(-1, 0, 1);
-        sudokuBoard.set(10, 0, 1);
+        Assertions.assertThrows(SudokuFieldWrongException.class, () -> sudokuBoard.set(0, 1, 10));
+        Assertions.assertThrows(SudokuFieldWrongException.class, () -> sudokuBoard.set(0, -2, 1));
+        Assertions.assertThrows(SudokuFieldWrongException.class, () -> sudokuBoard.set(0, 10, 2));
+        Assertions.assertThrows(SudokuFieldWrongException.class, () -> sudokuBoard.set(0, 10, -3));
+        Assertions.assertThrows(SudokuFieldWrongException.class, () -> sudokuBoard.set(-1, 0, 1));
+        Assertions.assertThrows(SudokuFieldWrongException.class, () -> sudokuBoard.set(10, 0, 1));
+
 
         Assertions.assertEquals(4, sudokuBoard.get(0, 0));
         Assertions.assertEquals(0, sudokuBoard.get(0, 1));
@@ -253,7 +259,6 @@ public class SudokuBoardTest {
         Dao<SudokuBoard> fileDao3 = SudokuBoardDaoFactory.getFileDao(badPath);
         Assertions.assertThrows(Exception.class, () -> fileDao3.write(sudokuBoard));
         Assertions.assertThrows(Exception.class, fileDao3::read);
-
     }
 
 

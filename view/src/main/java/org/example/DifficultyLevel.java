@@ -28,7 +28,9 @@ public enum DifficultyLevel {
 
     public static SudokuBoard deleteRandomNumbers(SudokuBoard sudokuBoard, String buttonName, Locale locale) {
         Logger logger = Logger.getLogger(DifficultyLevel.class.getName());
-        String difficultyLevel = ResourceBundle.getBundle("logger", locale).getString(buttonName + "Difficulty");
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("logger", locale);
+        String difficultyLevel = resourceBundle.getString(buttonName + "Difficulty");
+
         logger.info(difficultyLevel);
         SudokuBoard clone = sudokuBoard.clone();
         int amount = howManyDeletedFields(buttonName);
@@ -40,6 +42,7 @@ public enum DifficultyLevel {
 
             if (clone.get(row, col) != 0) {
                 clone.set(row, col, 0);
+                logger.info(resourceBundle.getString("deletedField") + " [" + row + "][" + col + "]");
                 deleted++;
             }
         }

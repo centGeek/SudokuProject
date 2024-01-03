@@ -4,6 +4,7 @@ import org.example.exceptions.FileDaoException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.util.Locale;
 
 public class FileDaoDecoratorTest {

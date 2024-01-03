@@ -87,9 +87,12 @@ public class SudokuFieldTest {
         assertEquals(0, sudokuField3.compareTo(sudokuField4));
 
 
-        SudokuFieldNullValueException sudokuFieldNullValueException = assertThrows(SudokuFieldNullValueException.class, () -> sudokuField3.compareTo(null));
-        Assertions.assertEquals("Can't compare null obj", sudokuFieldNullValueException.getLocalizedMessage(new Locale("en")));
-        Assertions.assertEquals("Nie mozna porownac obiektu null", sudokuFieldNullValueException.getLocalizedMessage(new Locale("pl")));
+        SudokuFieldNullValueException sudokuFieldNullValueException =
+                assertThrows(SudokuFieldNullValueException.class, () -> sudokuField3.compareTo(null));
+        Assertions.assertEquals("Can't compare null obj",
+                sudokuFieldNullValueException.getLocalizedMessage(new Locale("en")));
+        Assertions.assertEquals("Nie mozna porownac obiektu null",
+                sudokuFieldNullValueException.getLocalizedMessage(new Locale("pl")));
     }
 
     @Test
@@ -99,14 +102,20 @@ public class SudokuFieldTest {
 
         SudokuObserver sudokuObserver = new SudokuBoard(new BacktrackingSudokuSolver());
         SudokuField field = new SudokuField(sudokuObserver);
-        SudokuFieldWrongException exception1 = assertThrows(SudokuFieldWrongException.class, () -> field.setFieldValue(value1));
-        Assertions.assertEquals("Value is too big(1-9)", exception1.getLocalizedMessage(new Locale("en")));
-        Assertions.assertEquals("Wartosc jest zbyt duza(1-9)", exception1.getLocalizedMessage(new Locale("pl")));
+        SudokuFieldWrongException exception1 =
+                assertThrows(SudokuFieldWrongException.class, () -> field.setFieldValue(value1));
+        Assertions.assertEquals("Value is too big(1-9)",
+                exception1.getLocalizedMessage(new Locale("en")));
+        Assertions.assertEquals("Wartosc jest zbyt duza(1-9)",
+                exception1.getLocalizedMessage(new Locale("pl")));
 
         assertThrows(SudokuFieldWrongException.class, () -> field.setFieldValue(value2));
-        SudokuFieldWrongException exception2 = assertThrows(SudokuFieldWrongException.class, () -> field.setFieldValue(value2));
-        Assertions.assertEquals("Value is too small(1-9)", exception2.getLocalizedMessage(new Locale("en")));
-        Assertions.assertEquals("Wartosc jest zbyt mala(1-9)", exception2.getLocalizedMessage(new Locale("pl")));
+        SudokuFieldWrongException exception2 =
+                assertThrows(SudokuFieldWrongException.class, () -> field.setFieldValue(value2));
+        Assertions.assertEquals("Value is too small(1-9)",
+                exception2.getLocalizedMessage(new Locale("en")));
+        Assertions.assertEquals("Wartosc jest zbyt mala(1-9)",
+                exception2.getLocalizedMessage(new Locale("pl")));
 
         field.setFieldValue(1);
         assertEquals(1, field.getFieldValue());

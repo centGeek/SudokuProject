@@ -18,12 +18,13 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Main extends Application {
 
     private final LanguageManager languageManager = new LanguageManager();
-    private final Logger logger = Logger.getLogger(Main.class.getName());
+    private final Logger logger = LoggerFactory.getLogger(Main.class);
     private ResourceBundle langText;
     private Label label;
     private Label label1;

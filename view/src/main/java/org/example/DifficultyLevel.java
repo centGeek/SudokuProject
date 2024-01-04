@@ -3,7 +3,8 @@ package org.example;
 import java.util.Locale;
 import java.util.Random;
 import java.util.ResourceBundle;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public enum DifficultyLevel {
     EASY(10),
@@ -27,7 +28,7 @@ public enum DifficultyLevel {
     }
 
     public static SudokuBoard deleteRandomNumbers(SudokuBoard sudokuBoard, String buttonName, Locale locale) {
-        Logger logger = Logger.getLogger(DifficultyLevel.class.getName());
+        Logger logger = LoggerFactory.getLogger(DifficultyLevel.class);
         ResourceBundle resourceBundle = ResourceBundle.getBundle("logger", locale);
         String difficultyLevel = resourceBundle.getString(buttonName + "Difficulty");
 

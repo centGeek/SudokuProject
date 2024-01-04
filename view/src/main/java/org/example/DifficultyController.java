@@ -27,7 +27,8 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.ResourceBundle;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static org.example.DifficultyLevel.deleteRandomNumbers;
 import static org.example.DifficultyLevel.startGame;
@@ -35,7 +36,7 @@ import static org.example.DifficultyLevel.startGame;
 public class DifficultyController {
     private LanguageManager languageManager;
     private ResourceBundle langText;
-    public static final Logger logger = Logger.getLogger(DifficultyController.class.getName());
+    public static final Logger logger = LoggerFactory.getLogger(DifficultyController.class);
 
     public void setLanguageManager(LanguageManager languageManager) {
         this.languageManager = languageManager;
@@ -84,7 +85,7 @@ public class DifficultyController {
                 try {
                     daoDecorator.saveOriginalAndCopy(sudokuBoardInGame, sudokuBoard, locale);
                 } catch (FileDaoException ex) {
-                    logger.severe(ex.getMessage());
+                    logger.error(ex.getMessage());
                 }
             });
             Button fromFile = (Button) root.lookup("#fromFile");
@@ -94,7 +95,7 @@ public class DifficultyController {
                     daoDecorator.readOriginal(locale);
                     daoDecorator.readCopy(locale);
                 } catch (FileDaoException ex) {
-                    logger.severe(ex.getMessage());
+                    logger.error(ex.getMessage());
 
                 }
             });

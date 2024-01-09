@@ -46,8 +46,8 @@ public class Main extends Application {
         polishButton = new Button("polish");
         englishButton = new Button("english");
         logger.info("Application started");
-        DifficultyController difficultyController = loader.getController();
-        difficultyController.setLanguageManager(languageManager);
+        BoardController boardController = loader.getController();
+        boardController.setLanguageManager(languageManager);
 
 
         label = (Label) root.lookup("#label");

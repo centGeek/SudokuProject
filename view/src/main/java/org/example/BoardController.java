@@ -33,10 +33,10 @@ import org.slf4j.LoggerFactory;
 import static org.example.DifficultyLevel.deleteRandomNumbers;
 import static org.example.DifficultyLevel.startGame;
 
-public class DifficultyController {
+public class BoardController {
     private LanguageManager languageManager;
     private ResourceBundle langText;
-    public static final Logger logger = LoggerFactory.getLogger(DifficultyController.class);
+    public static final Logger logger = LoggerFactory.getLogger(BoardController.class);
 
     public void setLanguageManager(LanguageManager languageManager) {
         this.languageManager = languageManager;

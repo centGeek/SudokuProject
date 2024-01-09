@@ -12,6 +12,7 @@ public class SudokuField implements Serializable, Comparable<SudokuField>, Clone
     private int value;
     private final SudokuObserver sudokuObserver;
 
+
     public SudokuField(SudokuObserver sudokuObserver) {
         this.sudokuObserver = sudokuObserver;
     }

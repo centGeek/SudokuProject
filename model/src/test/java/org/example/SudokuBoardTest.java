@@ -1,5 +1,7 @@
 package org.example;
 
+import org.example.database.JpaSudokuBoardDao;
+import org.example.exceptions.FileDaoException;
 import org.example.exceptions.SudokuBoardCloneFailureException;
 import org.example.exceptions.SudokuFieldWrongException;
 import org.junit.jupiter.api.Assertions;
@@ -261,5 +263,25 @@ public class SudokuBoardTest {
         Assertions.assertThrows(Exception.class, fileDao3::read);
     }
 
+    @Test
+    public void databaseSystemWorksCorrectly() {
+        SudokuSolver sudokuSolver = new BacktrackingSudokuSolver();
+        SudokuBoard sudokuBoard = new SudokuBoard(sudokuSolver);
+        sudokuBoard.solveGame();
 
+        try (JpaSudokuBoardDao sudokuBoardDao = new JpaSudokuBoardDao("zmiecieZPlanszy")) {
+            sudokuBoardDao.write(sudokuBoard);
+            SudokuBoard read = sudokuBoardDao.read();
+
+            for (int row = 0; row < 9; row++) {
+                for (int column = 0; column < 9; column++) {
+                    Assertions.assertNotEquals(0, read.get(row, column));
+                    Assertions.assertEquals(sudokuBoard.get(row, column), read.get(row, column));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Assertions.fail("Exception occurred: " + e.getMessage());
+        }
+    }
 }

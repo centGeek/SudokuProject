@@ -2,11 +2,11 @@
 package org.example;
 
 import org.example.exceptions.FileDaoException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class FileDaoDecorator implements DaoDecorator {
     private static final Logger logger = LoggerFactory.getLogger(FileDaoException.class);

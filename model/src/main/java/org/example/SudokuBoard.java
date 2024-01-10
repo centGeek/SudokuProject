@@ -30,6 +30,7 @@ public class SudokuBoard implements SudokuObserver, Serializable, Cloneable {
             List<SudokuField> row = Arrays.asList(new SudokuField[number]);
             for (int column = 0; column < number; column++) {
                 row.set(column, board[y][column]);
+                row.get(column).setEditable(false);
             }
             SudokuRow sudokuRow = new SudokuRow();
             sudokuRow.setSudokuFields(row);

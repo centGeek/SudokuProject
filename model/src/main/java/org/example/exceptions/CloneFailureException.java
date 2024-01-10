@@ -1,6 +1,6 @@
 package org.example.exceptions;
 
-public class CloneFailureException extends SudokuException {
+public class CloneFailureException extends RuntimeException {
 
     String message;
 

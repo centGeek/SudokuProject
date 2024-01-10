@@ -1,5 +1,8 @@
 package org.example;
 
+import static org.example.DifficultyLevel.deleteRandomNumbers;
+import static org.example.DifficultyLevel.startGame;
+
 import javafx.beans.property.adapter.JavaBeanIntegerProperty;
 import javafx.beans.property.adapter.JavaBeanIntegerPropertyBuilder;
 import javafx.event.ActionEvent;
@@ -20,6 +23,7 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import javafx.util.converter.IntegerStringConverter;
+
 import org.example.exceptions.FileDaoException;
 import org.example.exceptions.ProcessingDataException;
 
@@ -27,11 +31,14 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.ResourceBundle;
+
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static org.example.DifficultyLevel.deleteRandomNumbers;
-import static org.example.DifficultyLevel.startGame;
+
+
+
 
 public class BoardController {
     private LanguageManager languageManager;
@@ -93,12 +100,59 @@ public class BoardController {
             fromFile.setOnAction(e -> {
                 try {
                     daoDecorator.readOriginal(locale);
-                    daoDecorator.readCopy(locale);
+                    SudokuBoard loadedBoard = daoDecorator.readCopy(locale);
+                    for (int row = 0; row < 9; row++) {
+                        for (int col = 0; col < 9; col++) {
+                            int value = loadedBoard.get(row, col);
+                            TextField textField = generateTextField(value, loadedBoard, row, col);
+                            gridPane.add(textField, col, row);
+                        }
+                    }
+
                 } catch (FileDaoException ex) {
                     logger.error(ex.getMessage());
-
+                } catch (NoSuchMethodException ex) {
+                    throw new RuntimeException(ex);
                 }
             });
+            Label searchedGameLabel = (Label) root.lookup("#searchedGame");
+            searchedGameLabel.setText(langText.getString("searchedGameLabel"));
+            TextField savedGame = (TextField) root.lookup("#gameName");
+            Button toDatabase = (Button) root.lookup("#toDatabase");
+            toDatabase.setText(langText.getString("toDatabase"));
+            toDatabase.setOnAction(e -> {
+                Dao<SudokuBoard> databaseDao = SudokuBoardDaoFactory.getDatabaseDao(savedGame.getText());
+                try {
+                    databaseDao.write(sudokuBoardInGame);
+                } catch (FileDaoException ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
+            Label label = (Label) root.lookup("#giveGameName");
+            label.setText(langText.getString("giveGameName"));
+            Button fromDatabase = (Button) root.lookup("#fromDatabase");
+            fromDatabase.setText(langText.getString("fromDatabase"));
+            TextField searchedGame = (TextField) root.lookup("#foundGame");
+            fromDatabase.setOnAction(e -> {
+                Dao<SudokuBoard> databaseDao = SudokuBoardDaoFactory.getDatabaseDao(searchedGame.getText());
+                try {
+                    SudokuBoard loadedBoard = databaseDao.read();
+                    for (int row = 0; row < 9; row++) {
+                        for (int col = 0; col < 9; col++) {
+                            int value = loadedBoard.get(row, col);
+                            TextField textField = generateTextField(value, loadedBoard, row, col);
+                            gridPane.add(textField, col, row);
+                        }
+                    }
+                } catch (FileDaoException ex) {
+                    logger.error(ex.getMessage());
+                } catch (NoSuchMethodException ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
+
+            Label some = (Label) root.lookup("#searchedGame");
+            some.setText(langText.getString("searchedGame"));
 
         } catch (IOException | NoSuchMethodException ex) {
             String message = ResourceBundle.getBundle("messages", locale).getString("errorBoardfxml");

@@ -10,20 +10,21 @@ public class SudokuFieldEntity {
     @Column(name = "id")
     private Integer sudokuFieldId;
 
-    @Column(name = "col")
-    private int column;
+    @Column(name = "col", nullable = false)
+    private int col;
 
-    @Column(name = "row")
+    @Column(name = "row", nullable = false)
     private int row;
 
-    @Column(name = "field_value")
+    @Column(name = "field_value", nullable = false)
     private int fieldValue;
+
     @ManyToOne
-    @JoinColumn(name = "board_id")
+    @JoinColumn(name = "board_id", nullable = false)
     private SudokuBoardEntity sudokuBoardEntity;
 
-    public void setColumn(int column) {
-        this.column = column;
+    public void setCol(int col) {
+        this.col = col;
     }
 
     public void setRow(int row) {
@@ -37,4 +38,5 @@ public class SudokuFieldEntity {
     public void setFieldValue(int fieldValue) {
         this.fieldValue = fieldValue;
     }
+
 }

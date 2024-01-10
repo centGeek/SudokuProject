@@ -3,8 +3,13 @@ package org.example;
 import java.util.Locale;
 import java.util.Random;
 import java.util.ResourceBundle;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+
+
+
 
 public enum DifficultyLevel {
     EASY(10),
@@ -43,6 +48,7 @@ public enum DifficultyLevel {
 
             if (clone.get(row, col) != 0) {
                 clone.set(row, col, 0);
+                clone.getSudokuField(row, col).setEditable(true);
                 logger.info(resourceBundle.getString("deletedField") + " [" + row + "][" + col + "]");
                 deleted++;
             }

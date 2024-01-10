@@ -12,6 +12,15 @@ public class SudokuField implements Serializable, Comparable<SudokuField>, Clone
     private int value;
     private final SudokuObserver sudokuObserver;
 
+    private boolean isEditable;
+
+    public boolean isEditable() {
+        return isEditable;
+    }
+
+    public void setEditable(boolean editable) {
+        isEditable = editable;
+    }
 
     public SudokuField(SudokuObserver sudokuObserver) {
         this.sudokuObserver = sudokuObserver;
